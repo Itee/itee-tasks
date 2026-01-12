@@ -211,7 +211,7 @@ async function getTasksFrom( taskFiles = [] ) {
 
     const tasks = []
     for ( const taskFile of taskFiles ) {
-        const relativeTaskFile = relative( clientPackageRootDirectory, taskFile )
+        const relativeTaskFile = relative( packageRootDirectory, taskFile )
 
         try {
 
