@@ -283,12 +283,15 @@ async function parallelizeTasksFrom( taskFiles = [] ) {
 
 function logLoadingTask( filename, task, configurationPath ) {
 
-    const taskPath                  = relative( packageRootDirectory, filename )
-    const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
+    const taskPath = relative( packageRootDirectory, filename )
 
     let logValue = `Loading  ${ green( taskPath ) } with task ${ blue( task.displayName ) }`
+
     if ( configurationPath ) {
+
+        const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
         logValue += `and configuration from ${ cyan( relativeConfigurationPath ) }`
+        
     }
 
     log( logValue )
