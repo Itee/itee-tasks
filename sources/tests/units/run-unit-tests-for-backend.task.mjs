@@ -7,7 +7,7 @@ import {
     relative
 }                     from 'path'
 import {
-    nodeModulesDirectory,
+    packageNodeModulesDirectory,
     packageName,
     packageRootDirectory,
     packageTestsUnitsDirectory
@@ -32,7 +32,7 @@ const runUnitTestsForBackendTask       = ( done ) => {
         return
     }
 
-    const mochaPath = join( nodeModulesDirectory, '/mocha/bin/mocha' )
+    const mochaPath = join( packageNodeModulesDirectory, '/mocha/bin/mocha' )
     const mocha     = spawn( 'node', [ mochaPath, testsPath ], { stdio: 'inherit' } )
     mocha.on( 'close', ( code ) => {
 

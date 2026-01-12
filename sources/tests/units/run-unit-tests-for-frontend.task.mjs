@@ -7,8 +7,9 @@ import {
 }                          from 'path'
 import {
     getConfigurationFrom,
+    iteePackageConfigurationsDirectory,
     packageRootDirectory,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory
 }                          from '../../_utils.mjs'
 
 const {
@@ -18,9 +19,8 @@ const {
           cyan
       } = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'tests', 'units', 'run-unit-tests-for-frontend.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'tests', 'units', 'run-unit-tests-for-frontend.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'tests', 'units', 'run-unit-tests-for-frontend.conf.mjs' )
 
 /**
  * @description Will run unit tests with web-test-runner
@@ -28,7 +28,7 @@ const relativeConfigurationPath = relative( packageRootDirectory, configurationP
 const runUnitTestsForFrontendTask       = () => {
     return new Promise( async ( resolve, reject ) => {
 
-        const configuration = await getConfigurationFrom( configurationPath, [] )
+        const configuration = await getConfigurationFrom( configurationPath, defaultConfigurationPath )
         const testRunner    = await startTestRunner( {
             config:          configuration,
             readCliArgs:     false,
@@ -57,6 +57,8 @@ runUnitTestsForFrontendTask.displayName = 'run-unit-tests-for-frontend'
 runUnitTestsForFrontendTask.description = 'Will run unit tests with web-test-runner'
 runUnitTestsForFrontendTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( runUnitTestsForFrontendTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { runUnitTestsForFrontendTask }

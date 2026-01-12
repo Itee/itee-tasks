@@ -15,11 +15,12 @@ import {
 import { rollup } from 'rollup'
 import {
     getConfigurationFrom,
+    iteePackageConfigurationsDirectory,
     packageBuildsDirectory as buildsDir,
     packageName,
     packageRootDirectory,
-    packageTestsBundlesDirectory as bundlesDir,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory,
+    packageTestsBundlesDirectory as bundlesDir
 }                 from '../../_utils.mjs'
 
 const {
@@ -30,13 +31,12 @@ const {
           cyan
       } = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'tests', 'bundlings', 'check-bundling-from-esm-build-import.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'tests', 'bundlings', 'check-bundling-from-esm-build-import.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'tests', 'bundlings', 'check-bundling-from-esm-build-import.conf.mjs' )
 
 const checkBundlingFromEsmBuildImportTask       = async ( done ) => {
 
-    const configuration = await getConfigurationFrom( configurationPath, [] )
+    const configuration = await getConfigurationFrom( configurationPath, defaultConfigurationPath )
 
     const buildFilePath = join( buildsDir, `${ packageName }.esm.js` )
     if ( !existsSync( buildFilePath ) ) {
@@ -129,6 +129,8 @@ checkBundlingFromEsmBuildImportTask.displayName = 'check-bundling-from-esm-build
 checkBundlingFromEsmBuildImportTask.description = 'Verify that the project esm build is correctly importable in third party esm files'
 checkBundlingFromEsmBuildImportTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( checkBundlingFromEsmBuildImportTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { checkBundlingFromEsmBuildImportTask }

@@ -7,8 +7,9 @@ import {
 }                          from 'path'
 import {
     getConfigurationFrom,
+    iteePackageConfigurationsDirectory,
     packageRootDirectory,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory
 }                          from '../../_utils.mjs'
 
 const {
@@ -18,9 +19,8 @@ const {
           cyan
       } = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'tests', 'benchmarks', 'run-benchmarks-for-frontend.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'tests', 'benchmarks', 'run-benchmarks-for-frontend.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'tests', 'benchmarks', 'run-benchmarks-for-frontend.conf.mjs' )
 
 /**
  * @description Will run benchmarks with web-test-runner
@@ -28,7 +28,7 @@ const relativeConfigurationPath = relative( packageRootDirectory, configurationP
 const runBenchmarksForFrontendTask       = () => {
     return new Promise( async ( resolve, reject ) => {
 
-        const configuration = await getConfigurationFrom( configurationPath, [] )
+        const configuration = await getConfigurationFrom( configurationPath, defaultConfigurationPath )
         const testRunner    = await startTestRunner( {
             config:          configuration,
             readCliArgs:     false,
@@ -57,6 +57,8 @@ runBenchmarksForFrontendTask.displayName = 'run-benchmarks-for-frontend'
 runBenchmarksForFrontendTask.description = 'Will run benchmarks with web-test-runner.'
 runBenchmarksForFrontendTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( runBenchmarksForFrontendTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { runBenchmarksForFrontendTask }

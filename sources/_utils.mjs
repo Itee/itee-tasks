@@ -48,9 +48,9 @@ function getJsonFrom( path ) {
 
 }
 
-async function getConfigurationFrom( path, defaultConfiguration ) {
+async function getConfigurationFrom( path, defaultPath ) {
 
-    let jsonData
+    let jsonData = null
 
     try {
 
@@ -67,8 +67,11 @@ async function getConfigurationFrom( path, defaultConfiguration ) {
 
     } catch ( e ) {
 
-        log( red( e ) )
-        jsonData = defaultConfiguration
+        if ( defaultPath ) {
+            jsonData = await getConfigurationFrom( defaultPath, null )
+        } else {
+            log( red( e ) )
+        }
 
     }
 
@@ -112,26 +115,32 @@ function getPackageRootDirectory() {
 
 }
 
-const packageRootDirectory            = getPackageRootDirectory()
-const packageJsonPath                 = join( packageRootDirectory, 'package.json' )
-const tasksDirectory                  = join( packageRootDirectory, '.tasks' )
-const tasksConfigurationsDirectory    = join( tasksDirectory, 'configs' )
-const nodeModulesDirectory            = join( packageRootDirectory, 'node_modules' )
-const packageBuildsDirectory          = join( packageRootDirectory, 'builds' )
-const packageSourcesDirectory         = join( packageRootDirectory, 'sources' )
-const packageSourcesBackendDirectory  = join( packageSourcesDirectory, 'backend' )
-const packageSourcesCommonDirectory   = join( packageSourcesDirectory, 'common' )
-const packageSourcesFrontendDirectory = join( packageSourcesDirectory, 'frontend' )
-const packageTestsDirectory           = join( packageRootDirectory, 'tests' )
-const packageTestsBenchmarksDirectory = join( packageTestsDirectory, 'benchmarks' )
-const packageTestsBundlesDirectory    = join( packageTestsDirectory, 'bundles' )
-const packageTestsUnitsDirectory      = join( packageTestsDirectory, 'units' )
-const packageDocsDirectory            = join( packageRootDirectory, 'docs' )
-const packageTutorialsDirectory       = join( packageRootDirectory, 'tutorials' )
+const iteePackageRootDirectory           = getPackageRootDirectory()
+const iteePackageJsonPath                = join( iteePackageRootDirectory, 'package.json' )
+const iteePackageConfigurationsDirectory = join( iteePackageRootDirectory, 'configs' )
+const iteePackageNodeModulesDirectory    = join( iteePackageRootDirectory, 'node_modules' )
+const iteePackageSourcesDirectory        = join( iteePackageRootDirectory, 'sources' )
+
+const packageRootDirectory                = join( iteePackageRootDirectory, '../../' )
+const packageTasksDirectory               = join( packageRootDirectory, '.tasks' )
+const packageTasksConfigurationsDirectory = join( packageTasksDirectory, 'configs' )
+const packageNodeModulesDirectory         = join( packageRootDirectory, 'node_modules' )
+const packageBuildsDirectory              = join( packageRootDirectory, 'builds' )
+const packageSourcesDirectory             = join( packageRootDirectory, 'sources' )
+const packageSourcesBackendDirectory      = join( packageSourcesDirectory, 'backend' )
+const packageSourcesCommonDirectory       = join( packageSourcesDirectory, 'common' )
+const packageSourcesFrontendDirectory     = join( packageSourcesDirectory, 'frontend' )
+const packageTestsDirectory               = join( packageRootDirectory, 'tests' )
+const packageTestsBenchmarksDirectory     = join( packageTestsDirectory, 'benchmarks' )
+const packageTestsBundlesDirectory        = join( packageTestsDirectory, 'bundles' )
+const packageTestsUnitsDirectory          = join( packageTestsDirectory, 'units' )
+const packageDocsDirectory                = join( packageRootDirectory, 'docs' )
+const packageTutorialsDirectory           = join( packageRootDirectory, 'tutorials' )
+const packageJsonPath                     = join( packageRootDirectory, 'package.json' )
 
 ///
 
-const packageJson        = getJsonFrom( packageJsonPath )
+const packageJson        = getJsonFrom( clientPackageJsonPath )
 const packageName        = packageJson.name
 const packageVersion     = packageJson.version
 const packageDescription = packageJson.description
@@ -202,7 +211,7 @@ async function getTasksFrom( taskFiles = [] ) {
 
     const tasks = []
     for ( const taskFile of taskFiles ) {
-        const relativeTaskFile = relative( packageRootDirectory, taskFile )
+        const relativeTaskFile = relative( clientPackageRootDirectory, taskFile )
 
         try {
 
@@ -299,8 +308,16 @@ export {
     createFile,
     getFilesFrom,
 
+    iteePackageRootDirectory,
+    iteePackageJsonPath,
+    iteePackageConfigurationsDirectory,
+    iteePackageNodeModulesDirectory,
+    iteePackageSourcesDirectory,
+
     packageRootDirectory,
-    packageJsonPath,
+    packageTasksDirectory,
+    packageTasksConfigurationsDirectory,
+    packageNodeModulesDirectory,
     packageBuildsDirectory,
     packageSourcesDirectory,
     packageSourcesBackendDirectory,
@@ -312,10 +329,7 @@ export {
     packageTestsUnitsDirectory,
     packageDocsDirectory,
     packageTutorialsDirectory,
-    tasksDirectory,
-    tasksConfigurationsDirectory,
-    nodeModulesDirectory,
-
+    packageJsonPath,
     packageJson,
     packageName,
     packageVersion,

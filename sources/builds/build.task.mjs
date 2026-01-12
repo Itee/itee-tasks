@@ -7,8 +7,9 @@ import {
 import { rollup } from 'rollup'
 import {
     getConfigurationFrom,
+    iteePackageConfigurationsDirectory,
     packageRootDirectory,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory
 }                 from '../_utils.mjs'
 
 const {
@@ -19,10 +20,9 @@ const {
           cyan
       } = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'builds', 'build.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-const configurations            = await getConfigurationFrom( configurationPath, [] )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'builds', 'build.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'builds', 'build.conf.mjs' )
+const configurations           = await getConfigurationFrom( configurationPath, defaultConfigurationPath )
 
 const buildTask       = async ( done ) => {
 
@@ -56,6 +56,8 @@ buildTask.displayName = 'build'
 buildTask.description = 'Todo...'
 buildTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( buildTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { buildTask }

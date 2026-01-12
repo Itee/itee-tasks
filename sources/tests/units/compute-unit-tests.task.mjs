@@ -15,18 +15,18 @@ import {
     getConfigurationFrom,
     getPrettyPackageName,
     Indenter,
-    nodeModulesDirectory,
+    iteePackageConfigurationsDirectory,
     packageName,
+    packageNodeModulesDirectory,
     packageRootDirectory,
     packageSourcesDirectory as sourcesDir,
-    packageTestsUnitsDirectory as unitsDir,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory,
+    packageTestsUnitsDirectory as unitsDir
 }                          from '../../_utils.mjs'
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'tests', 'units', 'compute-unit-tests.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-const configuration             = await getConfigurationFrom( configurationPath, [] )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'tests', 'units', 'compute-unit-tests.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'tests', 'units', 'compute-unit-tests.conf.mjs' )
+const configuration            = await getConfigurationFrom( configurationPath, defaultConfigurationPath )
 
 const {
           red,
@@ -61,7 +61,7 @@ const computeUnitTestsTask       = ( done ) => {
 
         try {
 
-            const jsdocPath   = join( nodeModulesDirectory, '/jsdoc/jsdoc.js' )
+            const jsdocPath   = join( packageNodeModulesDirectory, '/jsdoc/jsdoc.js' )
             const jsdocOutput = childProcess.execFileSync( 'node', [ jsdocPath, '-X', sourceFile ] ).toString()
 
             const classNames    = []
@@ -534,6 +534,8 @@ computeUnitTestsTask.displayName = 'compute-unit-tests'
 computeUnitTestsTask.description = 'Will generate unit test files from source code using type inference from comments'
 computeUnitTestsTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( computeUnitTestsTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { computeUnitTestsTask }

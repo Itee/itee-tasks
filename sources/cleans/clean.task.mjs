@@ -7,8 +7,9 @@ import {
 }                      from 'path'
 import {
     getConfigurationFrom,
+    iteePackageConfigurationsDirectory,
     packageRootDirectory,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory
 }                      from '../_utils.mjs'
 
 const {
@@ -18,10 +19,9 @@ const {
           cyan
       } = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'cleans', 'clean.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-const configuration             = await getConfigurationFrom( configurationPath, [] )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'cleans', 'clean.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'cleans', 'clean.conf.mjs' )
+const configuration            = await getConfigurationFrom( configurationPath, defaultConfigurationPath )
 
 /**
  * @method npm run clean
@@ -40,6 +40,8 @@ cleanTask.displayName = 'clean'
 cleanTask.description = 'Will delete builds and temporary folders'
 cleanTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( cleanTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { cleanTask }

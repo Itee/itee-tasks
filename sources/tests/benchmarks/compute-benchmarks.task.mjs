@@ -12,13 +12,14 @@ import {
     createDirectoryIfNotExist,
     createFile,
     getConfigurationFrom,
-    nodeModulesDirectory,
+    iteePackageConfigurationsDirectory,
     packageName,
+    packageNodeModulesDirectory,
     packageRootDirectory,
     packageSourcesDirectory as sourcesDir,
+    packageTasksConfigurationsDirectory,
     packageTestsBenchmarksDirectory as benchesDir,
-    packageTestsDirectory,
-    tasksConfigurationsDirectory
+    packageTestsDirectory
 }                   from '../../_utils.mjs'
 
 const {
@@ -29,10 +30,9 @@ const {
           cyan
       } = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'tests', 'benchmarks', 'compute-benchmarks.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-const configuration             = await getConfigurationFrom( configurationPath, [] )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'tests', 'benchmarks', 'compute-benchmarks.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'tests', 'benchmarks', 'compute-benchmarks.conf.mjs' )
+const configuration            = await getConfigurationFrom( configurationPath, defaultConfigurationPath )
 
 /**
  * @description Will generate benchmarks files from source code against provided alternatives
@@ -58,7 +58,7 @@ const computeBenchmarksTask       = ( done ) => {
 
         try {
 
-            const jsdocPath   = join( nodeModulesDirectory, '/jsdoc/jsdoc.js' )
+            const jsdocPath   = join( packageNodeModulesDirectory, '/jsdoc/jsdoc.js' )
             const jsdocOutput = childProcess.execFileSync( 'node', [ jsdocPath, '-X', sourceFile ] ).toString()
 
             const classNames    = []
@@ -223,6 +223,8 @@ computeBenchmarksTask.displayName = 'compute-benchmarks'
 computeBenchmarksTask.description = 'Will generate benchmarks files from source code against provided alternatives.'
 computeBenchmarksTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( computeBenchmarksTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { computeBenchmarksTask }

@@ -7,8 +7,9 @@ import {
     relative
 }                    from 'path'
 import {
+    iteePackageConfigurationsDirectory,
     packageRootDirectory,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory
 }                    from '../_utils.mjs'
 
 const execFile = promisify( child_process.execFile )
@@ -19,9 +20,8 @@ const {
           cyan
       }        = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'lints', 'eslint.conf.mjs' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'lints', 'eslint.conf.mjs' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'lints', 'eslint.conf.mjs' )
 
 /**
  * @method npm run lint
@@ -32,7 +32,7 @@ const lintTask       = async ( done ) => {
 
     try {
 
-        const { stdout } = await execFile( 'npx', [ 'eslint', '--config', relativeConfigurationPath, '--fix' ] )
+        const { stdout } = await execFile( 'npx', [ 'eslint', '--config', configurationPath, '--fix' ] )
         if ( stdout !== '' ) {
             log( stdout )
         }
@@ -41,8 +41,21 @@ const lintTask       = async ( done ) => {
 
     } catch ( error ) {
 
-        log( error.stdout )
-        done( red( error.message ) )
+        try {
+
+            const { stdout } = await execFile( 'npx', [ 'eslint', '--config', defaultConfigurationPath, '--fix' ] )
+            if ( stdout !== '' ) {
+                log( stdout )
+            }
+
+            done()
+
+        } catch ( error ) {
+
+            log( error.stdout )
+            done( red( error.message ) )
+
+        }
 
     }
 
@@ -51,6 +64,8 @@ lintTask.displayName = 'lint'
 lintTask.description = 'Will lint the sources files and try to fix the style when possible.'
 lintTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( lintTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { lintTask }

@@ -7,8 +7,9 @@ import {
     relative
 }                    from 'path'
 import {
+    iteePackageConfigurationsDirectory,
     packageRootDirectory,
-    tasksConfigurationsDirectory
+    packageTasksConfigurationsDirectory
 }                    from '../_utils.mjs'
 
 const execFile = promisify( child_process.execFile )
@@ -19,9 +20,8 @@ const {
           cyan
       }        = colors
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const configurationPath         = join( tasksConfigurationsDirectory, 'docs', 'doc.conf.json' )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
+const configurationPath        = join( packageTasksConfigurationsDirectory, 'docs', 'doc.conf.json' )
+const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, 'docs', 'doc.conf.json' )
 
 /**
  * @method npm run doc
@@ -34,14 +34,28 @@ const docTask       = async ( done ) => {
         const { stdout } = await execFile(
             './node_modules/.bin/jsdoc',
             [
-                '--configure', relativeConfigurationPath,
+                '--configure', configurationPath,
                 '--destination', './docs'
             ]
         )
         log( stdout )
         done()
     } catch ( error ) {
-        done( red( error.message ) )
+
+        try {
+            const { stdout } = await execFile(
+                './node_modules/.bin/jsdoc',
+                [
+                    '--configure', defaultConfigurationPath,
+                    '--destination', './docs'
+                ]
+            )
+            log( stdout )
+            done()
+        } catch ( error ) {
+            done( red( error.message ) )
+        }
+
     }
 
 }
@@ -49,6 +63,8 @@ docTask.displayName = 'doc'
 docTask.description = 'Will generate this documentation.'
 docTask.flags       = null
 
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
 log( `Loading  ${ green( taskPath ) } with task ${ blue( docTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
 
 export { docTask }
