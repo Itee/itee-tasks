@@ -1,0 +1,134 @@
+import colors     from 'ansi-colors'
+import log        from 'fancy-log'
+import {
+    existsSync,
+    mkdirSync,
+    readFileSync,
+    rmSync,
+    writeFileSync
+}                 from 'fs'
+import {
+    basename,
+    join,
+    relative
+}                 from 'path'
+import { rollup } from 'rollup'
+import {
+    getConfigurationFrom,
+    packageBuildsDirectory as buildsDir,
+    packageName,
+    packageRootDirectory,
+    packageTestsBundlesDirectory as bundlesDir,
+    tasksConfigurationsDirectory
+}                 from '../../_utils.mjs'
+
+const {
+          red,
+          green,
+          blue,
+          magenta,
+          cyan
+      } = colors
+
+const taskPath                  = relative( packageRootDirectory, import.meta.filename )
+const configurationPath         = join( tasksConfigurationsDirectory, 'tests', 'bundlings', 'check-bundling-from-esm-build-import.conf.mjs' )
+const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
+
+const checkBundlingFromEsmBuildImportTask       = async ( done ) => {
+
+    const configuration = await getConfigurationFrom( configurationPath, [] )
+
+    const buildFilePath = join( buildsDir, `${ packageName }.esm.js` )
+    if ( !existsSync( buildFilePath ) ) {
+        done( red( buildFilePath + ' does not exist' ) )
+    }
+
+    const outputDir      = join( bundlesDir, 'from_build_import' )
+    const temporaryDir   = join( bundlesDir, 'from_build_import', '.tmp' )
+    const importDir      = relative( temporaryDir, buildsDir )
+    const importFilePath = join( importDir, `${ packageName }.esm.js` )
+
+    if ( existsSync( outputDir ) ) {
+        log( 'Clean up', magenta( outputDir ) )
+        rmSync( outputDir, { recursive: true } )
+    }
+
+    try {
+
+        // Get build exports list
+        const data  = readFileSync( buildFilePath, 'utf8' )
+        const regex = /export\s{\s(.*)\s}/
+        const found = data.match( regex )
+        if ( found === null ) {
+            log( red( `Unable to find exports in ${ buildFilePath }` ) )
+            return
+        }
+
+        const exports = found[ 1 ].split( ',' )
+                                  .map( item => item.trim() )
+
+        // Create temporary imports files for each build export
+        // And then bundle it
+        let temporaryFilePaths = []
+        for ( let namedExport of exports ) {
+            if ( namedExport.includes( ' as ' ) ) {
+                namedExport = namedExport.split( ' as ' )[ 1 ]
+            }
+
+            const temporaryFileName = `${ namedExport }.import.js`
+            const temporaryFilePath = join( temporaryDir, temporaryFileName )
+            const temporaryFileData = `import { ${ namedExport } } from '${ importFilePath.replace( /\\/g, '/' ) }'`
+
+            mkdirSync( temporaryDir, { recursive: true } )
+            writeFileSync( temporaryFilePath, temporaryFileData )
+
+            temporaryFilePaths.push( temporaryFilePath )
+        }
+
+        // Bundle each temporary files and check side effects
+        let fileName, bundleFileName, bundleFilePath
+        for ( const temporaryFilePath of temporaryFilePaths ) {
+
+            fileName       = basename( temporaryFilePath )
+            bundleFileName = fileName.replace( '.tmp.', '.bundle.' )
+            bundleFilePath = join( outputDir, bundleFileName )
+
+            try {
+
+                configuration.input       = temporaryFilePath
+                configuration.output.file = bundleFilePath
+
+                const bundle     = await rollup( configuration )
+                const { output } = await bundle.generate( configuration.output )
+
+                let code = output[ 0 ].code
+                if ( code.length > 1 ) {
+                    log( red( `[${ bundleFileName }] contain side-effects !` ) )
+                    await bundle.write( configuration.output )
+                } else {
+                    log( green( `[${ bundleFileName }] is side-effect free.` ) )
+                }
+
+            } catch ( error ) {
+
+                log( red( error.message ) )
+
+            }
+        }
+
+    } catch ( error ) {
+        log( red( error.message ) )
+    } finally {
+
+        done()
+
+    }
+
+}
+checkBundlingFromEsmBuildImportTask.displayName = 'check-bundling-from-esm-build-import'
+checkBundlingFromEsmBuildImportTask.description = 'Verify that the project esm build is correctly importable in third party esm files'
+checkBundlingFromEsmBuildImportTask.flags       = null
+
+log( `Loading  ${ green( taskPath ) } with task ${ blue( checkBundlingFromEsmBuildImportTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+
+export { checkBundlingFromEsmBuildImportTask }
