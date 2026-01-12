@@ -32,7 +32,8 @@ const {
           red,
           green,
           blue,
-          yellow
+          yellow,
+          cyan
       } = colors
 
 /**
