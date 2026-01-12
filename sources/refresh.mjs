@@ -30,7 +30,6 @@ const defaultTaskFiles = [
     'docTask',
     'helpTask',
     'lintTask',
-    'patchTask',
     'releaseTask',
     'runTestsTask',
     'computeUnitTestsTask',
