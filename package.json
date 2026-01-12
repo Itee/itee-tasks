@@ -19,7 +19,7 @@
     "url":  "https://github.com/Itee/itee-tasks.git"
   },
   "type":            "module",
-  "main":            "index.mjs",
+  "main":            "sources/index.mjs",
   "homepage":        "https://github.com/Itee/itee-tasks#readme",
   "bugs":            {
     "url": "https://github.com/Itee/itee-tasks/issues"
