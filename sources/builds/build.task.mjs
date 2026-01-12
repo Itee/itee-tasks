@@ -1,22 +1,17 @@
 import colors     from 'ansi-colors'
 import log        from 'fancy-log'
-import {
-    join,
-    relative
-}                 from 'path'
+import { join }   from 'path'
 import { rollup } from 'rollup'
 import {
     getConfigurationFrom,
     getConfigurationPathFor,
-    packageRootDirectory
+    logLoadingTask
 }                 from '../_utils.mjs'
 
 const {
           red,
           green,
-          blue,
           yellow,
-          cyan
       } = colors
 
 const configurationLocation = join( 'builds', 'build.conf.mjs' )
@@ -55,8 +50,6 @@ buildTask.displayName = 'build'
 buildTask.description = 'Todo...'
 buildTask.flags       = null
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-log( `Loading  ${ green( taskPath ) } with task ${ blue( buildTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+logLoadingTask( import.meta.filename, buildTask, configurationPath )
 
 export { buildTask }

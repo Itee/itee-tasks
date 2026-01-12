@@ -16,9 +16,9 @@ import {
     getConfigurationPathFor,
     getPrettyPackageName,
     Indenter,
+    logLoadingTask,
     packageName,
     packageNodeModulesDirectory,
-    packageRootDirectory,
     packageSourcesDirectory as sourcesDir,
     packageTestsUnitsDirectory as unitsDir
 }                          from '../../_utils.mjs'
@@ -29,10 +29,7 @@ const configuration         = await getConfigurationFrom( configurationPath )
 
 const {
           red,
-          green,
-          blue,
           yellow,
-          cyan
       } = colors
 
 /**
@@ -533,8 +530,6 @@ computeUnitTestsTask.displayName = 'compute-unit-tests'
 computeUnitTestsTask.description = 'Will generate unit test files from source code using type inference from comments'
 computeUnitTestsTask.flags       = null
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-log( `Loading  ${ green( taskPath ) } with task ${ blue( computeUnitTestsTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+logLoadingTask( import.meta.filename, computeUnitTestsTask, configurationPath )
 
 export { computeUnitTestsTask }

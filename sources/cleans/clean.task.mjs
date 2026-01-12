@@ -1,22 +1,14 @@
 import colors          from 'ansi-colors'
 import { deleteAsync } from 'del'
 import log             from 'fancy-log'
-import {
-    join,
-    relative
-}                      from 'path'
+import { join }        from 'path'
 import {
     getConfigurationFrom,
     getConfigurationPathFor,
-    packageRootDirectory
+    logLoadingTask
 }                      from '../_utils.mjs'
 
-const {
-          red,
-          green,
-          blue,
-          cyan
-      } = colors
+const { red }  = colors
 
 const configurationLocation = join( 'cleans', 'clean.conf.mjs' )
 const configurationPath     = getConfigurationPathFor( configurationLocation )
@@ -39,8 +31,6 @@ cleanTask.displayName = 'clean'
 cleanTask.description = 'Will delete builds and temporary folders'
 cleanTask.flags       = null
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-log( `Loading  ${ green( taskPath ) } with task ${ blue( cleanTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+logLoadingTask( import.meta.filename, cleanTask, configurationPath )
 
 export { cleanTask }

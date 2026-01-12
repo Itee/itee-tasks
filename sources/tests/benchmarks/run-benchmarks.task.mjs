@@ -1,21 +1,11 @@
-import colors from 'ansi-colors'
-import log    from 'fancy-log'
-import {
-    join,
-    relative
-}             from 'path'
+import { join } from 'path'
 import {
     getConfigurationFrom,
     getConfigurationPathFor,
-    packageRootDirectory,
+    logLoadingTask,
     serializeTasksFrom
-}             from '../../_utils.mjs'
+}               from '../../_utils.mjs'
 
-const {
-          green,
-          blue,
-          cyan
-      } = colors
 
 const configurationLocation = join( 'tests', 'benchmarks', 'run-benchmarks.conf.mjs' )
 const configurationPath     = getConfigurationPathFor( configurationLocation )
@@ -26,8 +16,6 @@ runBenchmarksTestsTask.displayName = 'run-benchmarks'
 runBenchmarksTestsTask.description = 'Will run benchmarks in back and front environments.'
 runBenchmarksTestsTask.flags       = null
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-log( `Loading  ${ green( taskPath ) } with task ${ blue( runBenchmarksTestsTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+logLoadingTask( import.meta.filename, runBenchmarksTestsTask, configurationPath )
 
 export { runBenchmarksTestsTask }

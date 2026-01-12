@@ -2,21 +2,16 @@ import colors         from 'ansi-colors'
 import { spawn }      from 'child_process'
 import log            from 'fancy-log'
 import { existsSync } from 'fs'
+import { join }       from 'path'
 import {
-    join,
-    relative
-}                     from 'path'
-import {
-    packageNodeModulesDirectory,
+    logLoadingTask,
     packageName,
-    packageRootDirectory,
+    packageNodeModulesDirectory,
     packageTestsUnitsDirectory
 }                     from '../../_utils.mjs'
 
 const {
           red,
-          green,
-          blue,
           yellow,
       } = colors
 
@@ -47,6 +42,6 @@ runUnitTestsForBackendTask.displayName = 'run-unit-tests-for-backend'
 runUnitTestsForBackendTask.description = 'Will run unit tests with node'
 runUnitTestsForBackendTask.flags       = null
 
-log( 'Loading ', green( relative( packageRootDirectory, import.meta.filename ) ), `with task ${ blue( runUnitTestsForBackendTask.displayName ) }` )
+logLoadingTask( import.meta.filename, runUnitTestsForBackendTask )
 
 export { runUnitTestsForBackendTask }

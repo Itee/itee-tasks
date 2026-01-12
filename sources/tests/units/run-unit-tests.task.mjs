@@ -1,21 +1,11 @@
-import colors from 'ansi-colors'
-import log    from 'fancy-log'
-import {
-    join,
-    relative
-}             from 'path'
+import { join } from 'path'
 import {
     getConfigurationFrom,
     getConfigurationPathFor,
-    packageRootDirectory,
+    logLoadingTask,
     serializeTasksFrom
-}             from '../../_utils.mjs'
+}               from '../../_utils.mjs'
 
-const {
-          green,
-          blue,
-          cyan
-      } = colors
 
 const configurationLocation = join( 'tests', 'units', 'run-unit-tests.conf.mjs' )
 const configurationPath     = getConfigurationPathFor( configurationLocation )
@@ -26,8 +16,6 @@ runUnitTestsTask.displayName = 'run-unit-tests'
 runUnitTestsTask.description = 'Will run unit tests in back and front environments.'
 runUnitTestsTask.flags       = null
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-log( `Loading  ${ green( taskPath ) } with task ${ blue( runUnitTestsTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+logLoadingTask( import.meta.filename, runUnitTestsTask, configurationPath )
 
 export { runUnitTestsTask }

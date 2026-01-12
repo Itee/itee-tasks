@@ -1,22 +1,13 @@
 import { startTestRunner } from '@web/test-runner'
 import colors              from 'ansi-colors'
-import log                 from 'fancy-log'
-import {
-    join,
-    relative
-}                          from 'path'
+import { join }            from 'path'
 import {
     getConfigurationFrom,
     getConfigurationPathFor,
-    packageRootDirectory
+    logLoadingTask
 }                          from '../../_utils.mjs'
 
-const {
-          red,
-          green,
-          blue,
-          cyan
-      } = colors
+const { red } = colors
 
 const configurationLocation = join( 'tests', 'units', 'run-unit-tests-for-frontend.conf.mjs' )
 const configurationPath     = getConfigurationPathFor( configurationLocation )
@@ -56,8 +47,6 @@ runUnitTestsForFrontendTask.displayName = 'run-unit-tests-for-frontend'
 runUnitTestsForFrontendTask.description = 'Will run unit tests with web-test-runner'
 runUnitTestsForFrontendTask.flags       = null
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-log( `Loading  ${ green( taskPath ) } with task ${ blue( runUnitTestsForFrontendTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+logLoadingTask( import.meta.filename, runUnitTestsForFrontendTask, configurationPath )
 
 export { runUnitTestsForFrontendTask }

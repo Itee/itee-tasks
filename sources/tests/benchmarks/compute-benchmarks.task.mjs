@@ -13,9 +13,9 @@ import {
     createFile,
     getConfigurationFrom,
     getConfigurationPathFor,
+    logLoadingTask,
     packageName,
     packageNodeModulesDirectory,
-    packageRootDirectory,
     packageSourcesDirectory as sourcesDir,
     packageTestsBenchmarksDirectory as benchesDir,
     packageTestsDirectory
@@ -23,10 +23,7 @@ import {
 
 const {
           red,
-          green,
-          blue,
           yellow,
-          cyan
       } = colors
 
 const configurationLocation = join( 'tests', 'benchmarks', 'compute-benchmarks.conf.mjs' )
@@ -222,8 +219,6 @@ computeBenchmarksTask.displayName = 'compute-benchmarks'
 computeBenchmarksTask.description = 'Will generate benchmarks files from source code against provided alternatives.'
 computeBenchmarksTask.flags       = null
 
-const taskPath                  = relative( packageRootDirectory, import.meta.filename )
-const relativeConfigurationPath = relative( packageRootDirectory, configurationPath )
-log( `Loading  ${ green( taskPath ) } with task ${ blue( computeBenchmarksTask.displayName ) } and configuration from ${ cyan( relativeConfigurationPath ) }` )
+logLoadingTask( import.meta.filename, computeBenchmarksTask, configurationPath )
 
 export { computeBenchmarksTask }
