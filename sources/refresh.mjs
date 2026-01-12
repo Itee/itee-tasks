@@ -18,7 +18,7 @@ const {
           yellow
       } = colors
 
-const configurationPath = join( tasksConfigurationsDirectory, 'tasks.conf.mjs' )
+const configurationPath = join( tasksConfigurationsDirectory, 'refresh.conf.mjs' )
 const configuration     = await getConfigurationFrom( configurationPath, [] )
 
 // Get and filter tasks to expose
