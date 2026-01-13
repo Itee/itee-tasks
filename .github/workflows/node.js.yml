@@ -42,7 +42,6 @@ jobs:
       contents: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
