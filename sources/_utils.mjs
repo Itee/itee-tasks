@@ -77,10 +77,12 @@ function getTaskConfigurationPathFor( filename ) {
         defaultConfigurationPaths.push( defaultConfigurationPath )
     }
 
-    let configurationPath
+    // Take care of the configuration search order (package first then default !)
+    const configurationPaths = [ ...packageConfigurationPaths, ...defaultConfigurationPaths ]
+    let configurationPath    = undefined
 
-    // Looking for package existing configuration file first
-    for ( const packageConfigurationPath of packageConfigurationPaths ) {
+    // Looking for existing configuration file
+    for ( const packageConfigurationPath of configurationPaths ) {
 
         if ( existsSync( packageConfigurationPath ) ) {
             configurationPath = packageConfigurationPath
@@ -89,24 +91,9 @@ function getTaskConfigurationPathFor( filename ) {
 
     }
 
-    // Then search for default if not found
-    if ( !configurationPath ) {
-
-        for ( const defaultConfigurationPath of defaultConfigurationPaths ) {
-
-            if ( existsSync( defaultConfigurationPath ) ) {
-                configurationPath = defaultConfigurationPath
-                break
-            }
-
-        }
-
-    }
-
     // Else throw an error
     if ( !configurationPath ) {
-        throw new Error( `Unable to find configuration in package configuration paths ${ packageConfigurationPaths.join( ', ' ) } nor in default configuration paths ${ defaultConfigurationPaths.join(
-            ', ' ) }.` )
+        throw new Error( `Unable to find configuration in package configuration paths ${ configurationPaths.join( ', ' ) }.` )
     }
 
     return configurationPath
