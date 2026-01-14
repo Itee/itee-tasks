@@ -56,24 +56,40 @@ function getTaskConfigurationPathFor( filename ) {
                            ? relative( iteePackageSourcesDirectory, filename )
                            : relative( packageTasksDirectory, filename )
 
-    const configurationLocation    = relativeTaskPath.replace( '.task', '.conf' )
-    const packageConfigurationPath = join( packageTasksConfigurationsDirectory, configurationLocation )
-    const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, configurationLocation )
+    // Generate all possible config file path depending on file extension and default or user defined
+    const terminalExtension  = extname( relativeTaskPath )
+    const searchValue        = `.task${ terminalExtension }`
+    const replaceValues      = [
+        '.conf.json',
+        '.conf.js',
+        '.conf.mjs',
+    ]
+    const configurationPaths = []
 
+    for ( const replaceValue of replaceValues ) {
+        const configurationLocation    = relativeTaskPath.replace( searchValue, replaceValue )
+        const packageConfigurationPath = join( packageTasksConfigurationsDirectory, configurationLocation )
+        const defaultConfigurationPath = join( iteePackageConfigurationsDirectory, configurationLocation )
+
+        configurationPaths.push(
+            packageConfigurationPath,
+            defaultConfigurationPath
+        )
+    }
+
+    // Looking for existing configuration file (care the user defined must be searched before the default !)
     let configurationPath
+    for ( const currentConfigurationPath of configurationPaths ) {
 
-    if ( existsSync( packageConfigurationPath ) ) {
+        if ( existsSync( currentConfigurationPath ) ) {
+            configurationPath = currentConfigurationPath
+            break
+        }
 
-        configurationPath = packageConfigurationPath
+    }
 
-    } else if ( existsSync( defaultConfigurationPath ) ) {
-
-        configurationPath = defaultConfigurationPath
-
-    } else {
-
-        throw new Error( `Unable to find configuration for path ${ packageConfigurationPath } or ${ defaultConfigurationPath }` )
-
+    if ( !configurationPath ) {
+        throw new Error( `Unable to find configuration in paths ${ configurationPaths.join( ', ' ) }.` )
     }
 
     return configurationPath
