@@ -1,3 +1,8 @@
+# [v1.0.7](https://github.com/Itee/itee-tasks/compare/v1.0.6...v1.0.7) (2026-01-14)
+
+## 🐛 Bug Fixes
+- [`733b1f3`](https://github.com/Itee/itee-tasks/commit/733b1f3)  (utils) take care of the order of configurations files between package and default
+
 # [v1.0.6](https://github.com/Itee/itee-tasks/compare/v1.0.5...v1.0.6) (2026-01-14)
 
 ## 🐛 Bug Fixes
