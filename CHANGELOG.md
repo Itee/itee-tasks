@@ -1,3 +1,11 @@
+# [v1.1.0](https://github.com/Itee/tasks/compare/v1.0.13...v1.1.0) (2026-01-15)
+
+## ✨ New Features
+- [`f6c941a`](https://github.com/Itee/tasks/commit/f6c941a)  (builds) add default config for build task 
+
+## 🐛 Bug Fixes
+- [`231bd19`](https://github.com/Itee/tasks/commit/231bd19)  (utils) fix strict usage with complex options
+
 # [v1.0.13](https://github.com/Itee/tasks/compare/v1.0.12...v1.0.13) (2026-01-15)
 
 # [v1.0.12](https://github.com/Itee/itee-tasks/compare/v1.0.11...v1.0.12) (2026-01-14)
