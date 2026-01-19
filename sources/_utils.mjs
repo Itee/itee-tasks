@@ -254,6 +254,7 @@ function getTaskConfigurationPathFor( filename ) {
     const replaceValues     = [
         '.conf.json',
         '.conf.js',
+        '.conf.cjs',
         '.conf.mjs',
     ]
 
