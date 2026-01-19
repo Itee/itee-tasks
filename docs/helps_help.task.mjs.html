@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>@itee/tasks v1.1.0 Source: helps/help.task.mjs</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cyborg.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">@itee/tasks v1.1.0</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="global.html#checkBundlingFromEsmFilesDirectTask">checkBundlingFromEsmFilesDirectTask</a></li><li><a href="global.html#checkBundlingTask">checkBundlingTask</a></li><li><a href="global.html#computeBenchmarksTask">computeBenchmarksTask</a></li><li><a href="global.html#computeUnitTestsTask">computeUnitTestsTask</a></li><li><a href="global.html#createRollupConfigs">createRollupConfigs</a></li><li><a href="global.html#npmrunclean">npm run clean</a></li><li><a href="global.html#npmrunhelpdefault">npm run help ( default )</a></li><li><a href="global.html#npmrunlint">npm run lint</a></li><li><a href="global.html#npmrunpatch">npm run patch</a></li><li><a href="global.html#npmrunrelease">npm run release</a></li><li><a href="global.html#npmruntest">npm run test</a></li><li><a href="global.html#runBenchmarksForBackendTask">runBenchmarksForBackendTask</a></li><li><a href="global.html#runBenchmarksForFrontendTask">runBenchmarksForFrontendTask</a></li><li><a href="global.html#runUnitTestsForBackendTask">runUnitTestsForBackendTask</a></li><li><a href="global.html#runUnitTestsForFrontendTask">runUnitTestsForFrontendTask</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: helps/help.task.mjs</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import colors from 'ansi-colors'
+import log    from 'fancy-log'
+import { basename } from 'node:path'
+import {
+    getPrettyNodeVersion,
+    getPrettyNpmVersion,
+    getPrettyPackageName,
+    getPrettyPackageVersion,
+    Indenter,
+    logLoadingTask
+}             from '../_utils.mjs'
+
+logLoadingTask( import.meta.filename )
+
+const {
+          red,
+          green,
+          blue,
+          cyan,
+          yellow,
+          magenta,
+          unstyle
+      } = colors
+
+function alignTextCenter( text, width ) {
+
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    const marginLength = ( width - unstyledText.length ) / 2
+
+    let leftMargin, rightMargin
+    if ( Number.isInteger( marginLength ) ) {
+        leftMargin  = marginLength
+        rightMargin = marginLength
+    } else {
+        const flooredMargin = Math.floor( marginLength )
+        leftMargin          = flooredMargin
+        rightMargin         = flooredMargin + 1
+    }
+
+    return ' '.repeat( leftMargin ) + text + ' '.repeat( rightMargin )
+
+}
+
+function alignTextLeft( text, width ) {
+
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    let repeatTime     = width - unstyledText.length
+    repeatTime         = ( repeatTime > 0 ) ? repeatTime : 0
+
+    return text + ' '.repeat( repeatTime )
+
+}
+
+function alignTextRight( text, width ) {
+
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    let repeatTime     = width - unstyledText.length
+    repeatTime         = ( repeatTime > 0 ) ? repeatTime : 0
+
+    return ' '.repeat( repeatTime ) + text
+
+}
+
+/**
+ * @method npm run help ( default )
+ * @global
+ * @description Will display the help in console
+ */
+const helpTask       = ( done ) => {
+
+    const bannerWidth          = 70
+    const prettyPackageName    = getPrettyPackageName()
+    const prettyPackageVersion = getPrettyPackageVersion()
+    const prettyNodeVersion    = getPrettyNodeVersion()
+    const prettyNpmVersion     = getPrettyNpmVersion()
+
+    const tableCharset = {
+        topLeftCorner:       '┏',
+        topRightCorner:      '┓',
+        bottomRightCorner:   '┛',
+        bottomLeftCorner:    '┗',
+        horizontalBorder:    '━',
+        horizontalSeparator: '─',
+        leftJoinSeparator:   '┠',
+        rightJoinSeparator:  '┨',
+        verticalBorder:      '┃',
+        verticalSeparator:   '',
+    }
+
+    const mainBorder     = tableCharset.horizontalBorder.repeat( bannerWidth )
+    const thinBorder     = tableCharset.horizontalSeparator.repeat( bannerWidth )
+    const tableTop       = `${ tableCharset.topLeftCorner }${ mainBorder }${ tableCharset.topRightCorner }`
+    const tableSeparator = `${ tableCharset.leftJoinSeparator }${ thinBorder }${ tableCharset.rightJoinSeparator }`
+    const tableBottom    = `${ tableCharset.bottomLeftCorner }${ mainBorder }${ tableCharset.bottomRightCorner }`
+    const tableLine      = ( innerText ) => `${ tableCharset.verticalBorder }${ innerText }${ tableCharset.verticalBorder }`
+
+    const {
+              I_,
+              I__,
+              I___,
+              I____,
+          } = new Indenter( '\t', 4 )
+
+    const npmRun = blue( 'npm run' )
+
+    log( '' )
+    log( tableTop )
+    log( tableLine( alignTextCenter( 'HELP', bannerWidth ) ) )
+    log( tableLine( alignTextCenter( prettyPackageName, bannerWidth ) ) )
+    log( tableLine( alignTextCenter( prettyPackageVersion, bannerWidth ) ) )
+    log( tableSeparator )
+    log( tableLine( alignTextLeft( prettyNodeVersion, bannerWidth ) ) )
+    log( tableLine( alignTextLeft( prettyNpmVersion, bannerWidth ) ) )
+    log( tableBottom )
+    log( I_, 'Available commands are:' )
+    log( I__, npmRun, cyan( 'help' ), '- Display this help.' )
+    log( I__, npmRun, cyan( 'patch' ), '- Will apply some patch/replacements in dependencies.', red( '(Apply only once after run "npm install")' ) )
+    log( I__, npmRun, cyan( 'clean' ), '- Will delete builds and temporary folders.' )
+    log( I__, npmRun, cyan( 'lint' ), '- Will run the eslint in pedantic mode with auto fix when possible.' )
+    log( I__, npmRun, cyan( 'doc' ), '- Will run jsdoc, and create documentation under `documentation` folder, using the docdash theme' )
+    log( I__, npmRun, cyan( 'test' ), '- Will run the test framworks (unit and bench), and create reports under `documentation/report` folder, using the mochawesome theme' )
+    log( I__, npmRun, cyan( 'unit' ), '- Will run the karma server for unit tests.' )
+    log( I__, npmRun, cyan( 'bench' ), '- Will run the karma server for benchmarks.' )
+    log( I__, npmRun, cyan( 'build' ), yellow( '--' ), green( '&lt;options>' ), '- Will build the application for development and/or production environments.' )
+    log( I___, yellow( 'Note: The two dash are only required if you provide options !' ) )
+    log( I___, 'The available', green( '&lt;options>' ), 'are:' )
+    log( I____, green( '-i' ), 'or', green( '--input' ), '- The main file path to build', cyan( '[Default: "sources/main.js"]' ), '.' )
+    log( I____, green( '-o' ), 'or', green( '--output' ), '- The folder where output the build', cyan( '[Default: "builds"]' ), '.' )
+    log(
+        I____,
+        green( '-f:' ),
+        magenta( '&lt;format>' ),
+        'or',
+        green( '--format:' ),
+        magenta( '&lt;format>' ),
+        ' - to specify the output build type. Where format could be any of:', magenta( 'cjs, esm, iife, umd' ), '.'
+    )
+    log( I____, green( '-e:' ), magenta( '&lt;env>' ), 'or', green( '--env:' ), magenta( '&lt;env>' ), ' - to specify the build environment. Where env could be any of:', magenta(
+        'dev' ), magenta( 'prod' ), cyan( '[Default: "dev"]' ), '.' )
+    log( I____, green( '-s' ), 'or', green( '--sourcemap' ), ' - to build with related source map', cyan( '[Default: true]' ), '.' )
+    log( I____, green( '-t' ), 'or', green( '--treeshake' ), ' - allow to perform treeshaking when building', cyan( '[Default: true]' ), '.' )
+    log( I__, npmRun, cyan( 'release' ), '- Will run all the lint, test stuff, and if succeed will build the application.' )
+    log( '' )
+    log( I_, 'In case you have', blue( 'gulp' ), 'installed globally, you could use also:' )
+    log( I__, blue( 'gulp' ), cyan( 'command' ), '- It will perform the command like using "npm run" but with less characters to type... Because you\'re a developer, right ?' )
+    log( '' )
+
+    done()
+
+}
+helpTask.displayName = basename( import.meta.filename, '.task.mjs' )
+helpTask.description = 'Display the package help'
+helpTask.flags       = null
+
+export { helpTask }
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright 2015-Present <a href="https://github.com/Itee">Itee</a> (Tristan Valcke)
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
