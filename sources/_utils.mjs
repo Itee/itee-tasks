@@ -398,6 +398,22 @@ function computeIntroFor( requestPackages ) {
 
 }
 
+function getOutputFileExtensionBasedOnFileFormat( format ) {
+
+    let extension
+
+    if ( format === 'cjs' ) {
+        extension = 'cjs'
+    } else if ( format === 'esm' ) {
+        extension = 'mjs'
+    } else {
+        extension = 'js'
+    }
+
+    return extension
+
+}
+
 /**
  * Will create an appropriate configuration object for rollup, related to the given arguments.
  *
@@ -434,7 +450,8 @@ function createRollupConfigs( options = undefined ) {
             const env        = envs[ envIndex ]
             const isProd     = ( env.includes( 'prod' ) )
             const format     = formats[ formatIndex ]
-            const outputPath = ( isProd ) ? join( output, `${ fileName }.${ format }.min.js` ) : join( output, `${ fileName }.${ format }.js` )
+            const extension  = getOutputFileExtensionBasedOnFileFormat( format )
+            const outputPath = ( isProd ) ? join( output, `${ fileName }.min.${ extension }` ) : join( output, `${ fileName }.${ extension }` )
 
             configs.push( {
                 input:     input,
