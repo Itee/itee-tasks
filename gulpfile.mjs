@@ -19,10 +19,10 @@ export * from './sources/tests/benchmarks/run-benchmarks-for-frontend.task.mjs'
 export * from './sources/tests/benchmarks/run-benchmarks-for-backend.task.mjs'
 export * from './sources/tests/benchmarks/compute-benchmarks.task.mjs'
 export * from './sources/releases/release.task.mjs'
+export * from './sources/patches/patch.task.mjs'
 export * from './sources/lints/lint.task.mjs'
 export * from './sources/helps/help.task.mjs'
 export * from './sources/docs/doc.task.mjs'
 export * from './sources/cleans/clean.task.mjs'
 export * from './sources/builds/build.task.mjs'
 
-// User defined tasks
