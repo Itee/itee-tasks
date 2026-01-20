@@ -5,7 +5,7 @@ import {
     basename,
     join,
     relative
-}                        from 'path'
+} from 'path'
 import {
     getFilesFrom,
     getTaskConfigurationFor,
@@ -14,7 +14,7 @@ import {
     packageNodeModulesDirectory,
     packageRootDirectory,
     packageTasksDirectory
-}                        from './_utils.mjs'
+} from '../sources/_utils.mjs'
 
 const {
           green,

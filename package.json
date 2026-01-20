@@ -28,9 +28,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "postinstall": "node ./sources/refresh.mjs && gulp patch",
+    "postinstall": "node ./scripts/refresh.mjs && gulp patch",
+    "refresh": "node ./scripts/refresh.mjs",
     "default": "gulp --tasks",
-    "refresh": "node ./sources/refresh.mjs",
     "help": "gulp help",
     "patch": "gulp patch",
     "clean": "gulp clean",
