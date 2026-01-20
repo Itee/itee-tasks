@@ -1,7 +1,8 @@
 import {
     getPrettyPackageName,
-    getPrettyPackageVersion
-} from '../../sources/_utils.mjs'
+    getPrettyPackageVersion,
+    packageAuthor
+} from '../_utils.mjs'
 
 export default {
     tags:         {
@@ -46,7 +47,7 @@ export default {
         search:            true,
         systemName:        `${ getPrettyPackageName() } ${ getPrettyPackageVersion() }`,
         footer:            '',
-        copyright:         'Copyright 2015-Present <a href="https://github.com/Itee">Itee</a> (Tristan Valcke)',
+        copyright:         `Copyright 2015-Present <a href="${packageAuthor.url}">${packageAuthor.name}</a>`,
         includeDate:       false,
         inverseNav:        false,
         outputSourceFiles: true,
