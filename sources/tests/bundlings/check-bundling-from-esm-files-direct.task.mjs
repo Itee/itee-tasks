@@ -46,7 +46,7 @@ const checkBundlingFromEsmFilesDirectTask       = async ( done ) => {
                             .map( filePath => normalize( filePath ) )
                             .filter( filePath => {
                                 const fileName         = basename( filePath )
-                                const isJsFile         = fileName.endsWith( '.js' )
+                                const isJsFile         = [ '.js', '.mjs', '.cjs' ].includes( extname( fileName ) )
                                 const isNotPrivateFile = !fileName.startsWith( '_' )
                                 const isNotIgnoredFile = !configuration.ignoredFiles.includes( fileName )
                                 return isJsFile && isNotPrivateFile && isNotIgnoredFile

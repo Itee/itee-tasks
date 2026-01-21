@@ -45,7 +45,7 @@ const computeBenchmarksTask       = async ( done ) => {
                             .map( filePath => normalize( filePath ) )
                             .filter( filePath => {
                                 const fileName         = basename( filePath )
-                                const isJsFile         = fileName.endsWith( '.js' )
+                                const isJsFile         = [ '.js', '.mjs', '.cjs' ].includes( extname( fileName ) )
                                 const isNotPrivateFile = !fileName.startsWith( '_' )
                                 const isNotIgnoredFile = !filePathsToIgnore.includes( fileName )
                                 return isJsFile && isNotPrivateFile && isNotIgnoredFile
@@ -69,7 +69,12 @@ const computeBenchmarksTask       = async ( done ) => {
         try {
 
             const jsdocPath   = join( packageNodeModulesDirectory, '/jsdoc/jsdoc.js' )
-            const jsdocOutput = childProcess.execFileSync( 'node', [ jsdocPath, '-X', sourceFile ] ).toString()
+            const jsdocOutput = childProcess.execFileSync( 'node', [ jsdocPath, '--explain', sourceFile ] ).toString()
+
+            if ( jsdocOutput.includes('There are no input files to process') ) {
+                log( 'Error   ', red( `${ sourceFile }, no input files to process` ) )
+                continue
+            }
 
             const classNames    = []
             const usedLongnames = []
