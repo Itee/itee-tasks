@@ -1,3 +1,5 @@
+/* global Benchmark */
+
 async function getBenchmarkPackage() {
 
     let _Benchmark
