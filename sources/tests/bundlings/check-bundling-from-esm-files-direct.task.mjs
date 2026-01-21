@@ -1,3 +1,4 @@
+import { glob }                    from 'glob'
 import {
     existsSync,
     rmSync
@@ -6,7 +7,8 @@ import {
     basename,
     dirname,
     extname,
-    join
+    join,
+    normalize
 }                                  from 'node:path'
 import { rollup }                  from 'rollup'
 import {
