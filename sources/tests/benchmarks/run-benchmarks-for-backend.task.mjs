@@ -19,7 +19,7 @@ logLoadingTask( import.meta.filename )
  */
 const runBenchmarksForBackendTask       = async ( done ) => {
 
-    const benchesPath = join( packageTestsBenchmarksDirectory, `/${ packageName }.benchmarks.js` )
+    const benchesPath = join( packageTestsBenchmarksDirectory, `/${ getUnscopedPackageName() }.benchmarks.js` )
     if ( !existsSync( benchesPath ) ) {
         log( yellow( `${ benchesPath } does not exist, skip backend benchmarks...` ) )
         done()

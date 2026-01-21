@@ -23,7 +23,7 @@ logLoadingTask( import.meta.filename )
  */
 const runUnitTestsForBackendTask       = ( done ) => {
 
-    const testsPath = join( packageTestsUnitsDirectory, `/${ packageName }.units.mjs` )
+    const testsPath = join( packageTestsUnitsDirectory, `/${ getUnscopedPackageName() }.units.mjs` )
     if ( !existsSync( testsPath ) ) {
         log( yellow( `${ testsPath } does not exist, skip backend unit tests...` ) )
         done()

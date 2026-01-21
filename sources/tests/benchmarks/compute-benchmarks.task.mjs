@@ -223,7 +223,7 @@ const computeBenchmarksTask       = async ( done ) => {
         `\tsuite.run()` + '\n' +
         `}` + '\n'
 
-    const benchesFilePath = join( packageTestsBenchmarksDirectory, `${ packageName }.benchmarks.js` )
+    const benchesFilePath = join( packageTestsBenchmarksDirectory, `${ getUnscopedPackageName() }.benchmarks.js` )
     createFile( benchesFilePath, benchesTemplate )
 
     done()

@@ -534,7 +534,7 @@ const computeUnitTestsTask       = async ( done ) => {
 
     }
 
-    const unitsFilePath = join( packageTestsUnitsDirectory, `${ packageName }.units.mjs` )
+    const unitsFilePath = join( packageTestsUnitsDirectory, `${ getUnscopedPackageName() }.units.mjs` )
     createFile( unitsFilePath, unitsTemplate )
 
     done()

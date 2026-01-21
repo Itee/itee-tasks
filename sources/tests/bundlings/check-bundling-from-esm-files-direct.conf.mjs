@@ -9,7 +9,7 @@ import { getUnscopedPackageName } from '../../utils/packages.mjs'
 
 export default {
     ignoredFiles: [
-        `${ packageName }.js`
+        `${ getUnscopedPackageName() }.js`
     ],
     buildOptions: {
         input:    null,
