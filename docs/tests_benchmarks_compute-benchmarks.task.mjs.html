@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Itee Tasks v1.3.2 Source: tests/benchmarks/compute-benchmarks.task.mjs</title>
+	<title>Itee Tasks v1.3.3 Source: tests/benchmarks/compute-benchmarks.task.mjs</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,7 +20,7 @@
 <div class="navbar navbar-default navbar-fixed-top ">
 <div class="container">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="index.html">Itee Tasks v1.3.2</a>
+		<a class="navbar-brand" href="index.html">Itee Tasks v1.3.3</a>
 		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu inline">
-					<li><a href="global.html#checkBundlingFromEsmFilesDirectTask">checkBundlingFromEsmFilesDirectTask</a></li><li><a href="global.html#checkBundlingTask">checkBundlingTask</a></li><li><a href="global.html#computeBenchmarksTask">computeBenchmarksTask</a></li><li><a href="global.html#computeUnitTestsTask">computeUnitTestsTask</a></li><li><a href="global.html#npmrunclean">npm run clean</a></li><li><a href="global.html#npmrunhelpdefault">npm run help ( default )</a></li><li><a href="global.html#npmrunlint">npm run lint</a></li><li><a href="global.html#npmrunpatch">npm run patch</a></li><li><a href="global.html#npmrunrelease">npm run release</a></li><li><a href="global.html#npmruntest">npm run test</a></li><li><a href="global.html#runBenchmarksForBackendTask">runBenchmarksForBackendTask</a></li><li><a href="global.html#runBenchmarksForFrontendTask">runBenchmarksForFrontendTask</a></li><li><a href="global.html#runUnitTestsForBackendTask">runUnitTestsForBackendTask</a></li><li><a href="global.html#runUnitTestsForFrontendTask">runUnitTestsForFrontendTask</a></li>
+					<li><a href="global.html#alignTextCenter">alignTextCenter</a></li><li><a href="global.html#alignTextLeft">alignTextLeft</a></li><li><a href="global.html#alignTextRight">alignTextRight</a></li><li><a href="global.html#checkBundlingFromEsmFilesDirectTask">checkBundlingFromEsmFilesDirectTask</a></li><li><a href="global.html#checkBundlingTask">checkBundlingTask</a></li><li><a href="global.html#computeBenchmarksTask">computeBenchmarksTask</a></li><li><a href="global.html#computeUnitTestsTask">computeUnitTestsTask</a></li><li><a href="global.html#npmrunclean">npm run clean</a></li><li><a href="global.html#npmrunhelpdefault">npm run help ( default )</a></li><li><a href="global.html#npmrunlint">npm run lint</a></li><li><a href="global.html#npmrunpatch">npm run patch</a></li><li><a href="global.html#npmrunrelease">npm run release</a></li><li><a href="global.html#npmruntest">npm run test</a></li><li><a href="global.html#runBenchmarksForBackendTask">runBenchmarksForBackendTask</a></li><li><a href="global.html#runBenchmarksForFrontendTask">runBenchmarksForFrontendTask</a></li><li><a href="global.html#runUnitTestsForBackendTask">runUnitTestsForBackendTask</a></li><li><a href="global.html#runUnitTestsForFrontendTask">runUnitTestsForFrontendTask</a></li><li><a href="global.html#toCamelCase">toCamelCase</a></li>
 				</ul>
 			</li>
 			
@@ -93,10 +93,10 @@ import {
 }                                  from '../../utils/loggings.mjs'
 import {
     getUnscopedPackageName,
+    iteePackageSourcesDirectory,
     packageNodeModulesDirectory,
     packageSourcesDirectory,
-    packageTestsBenchmarksDirectory,
-    packageTestsDirectory
+    packageTestsBenchmarksDirectory
 }                                  from '../../utils/packages.mjs'
 import { getTaskConfigurationFor } from '../../utils/tasks.mjs'
 import { toCamelCase }             from '../../utils/texts.mjs'
@@ -154,18 +154,17 @@ const computeBenchmarksTask       = async ( done ) => {
                     return false
                 }
 
-                // We don't care that data bloc have comment they are unused to generate benchmarks
-                // const undocumented = data.undocumented
-                // if ( undocumented ) {
-                //     return false
-                // }
-
                 const scope = data.scope
                 if ( ![ 'global', 'static' ].includes( scope ) ) {
                     return false
                 }
 
-                if ( longName.includes( ' ' ) || longName.includes( '~' ) || usedLongnames.includes( longName ) ) {
+                if ( longName.startsWith( '_' ) || longName.includes( ' ' ) || longName.includes( '~' ) || usedLongnames.includes( longName ) ) {
+                    return false
+                }
+
+                const memberOf = data.memberof || ''
+                if ( memberOf.includes( '.' ) ) {
                     return false
                 }
 
@@ -225,9 +224,9 @@ const computeBenchmarksTask       = async ( done ) => {
             }
 
             // compute relative level to get import wrappers
-            const wrapperDirPath          = relative( benchDirPath, packageTestsDirectory )
-            const importBenchmarkFilePath = join( wrapperDirPath, 'import.benchmarks.js' )
-            const importTestingFilePath   = join( wrapperDirPath, 'import.testing.js' )
+            const wrapperDirPath          = relative( benchDirPath, iteePackageSourcesDirectory )
+            const importBenchmarkFilePath = join( wrapperDirPath, 'utils', 'benchmarks.js' )
+            const importTestingFilePath   = join( wrapperDirPath, 'utils', 'testing.js' )
 
             const template = '' +
                 `import * as ${ nsName } from '${ importFilePath }'` + '\n' +

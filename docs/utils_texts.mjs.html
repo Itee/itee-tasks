@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Itee Tasks v1.3.3 Source: releases/release.task.mjs</title>
+	<title>Itee Tasks v1.3.3 Source: utils/texts.mjs</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -65,43 +65,133 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: releases/release.task.mjs</h1>
+		<h1 class="page-title">Source: utils/texts.mjs</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import { series }                from 'gulp'
-import { basename }              from 'node:path'
-import { buildTask }             from '../builds/build.task.mjs'
-import { cleanTask }             from '../cleans/clean.task.mjs'
-import { docTask }               from '../docs/doc.task.mjs'
-import { lintTask }              from '../lints/lint.task.mjs'
-import { computeBenchmarksTask } from '../tests/benchmarks/compute-benchmarks.task.mjs'
-import { runTestsTask }          from '../tests/run-tests.task.mjs'
-import { computeUnitTestsTask }  from '../tests/units/compute-unit-tests.task.mjs'
-import { logLoadingTask }        from '../utils/loggings.mjs'
-
-logLoadingTask( import.meta.filename )
+            class="sunlight-highlight-javascript linenums">import { unstyle } from './colors.mjs'
 
 /**
- * @method npm run release
- * @global
- * @description Will perform a complete release of the library including 'clean', 'lint', 'doc', 'build-tests', 'test' and finally 'build'.
+ *
+ * @param {string} text
+ * @param {number} width
+ * @returns {string}
  */
-const releaseTask       = series(
-    cleanTask,
-    buildTask,
-    computeBenchmarksTask,
-    computeUnitTestsTask,
-    runTestsTask,
-    lintTask,
-    docTask,
-)
-releaseTask.displayName = basename( import.meta.filename, '.task.mjs' )
-releaseTask.description = 'Will perform a complete release of the library including \'clean\', \'lint\', \'doc\', \'test\' and finally \'build\'.'
-releaseTask.flags       = null
+function alignTextCenter( text, width ) {
 
-export { releaseTask }</pre>
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    const marginLength = ( width - unstyledText.length ) / 2
+
+    let leftMargin, rightMargin
+    if ( Number.isInteger( marginLength ) ) {
+        leftMargin  = marginLength
+        rightMargin = marginLength
+    } else {
+        const flooredMargin = Math.floor( marginLength )
+        leftMargin          = flooredMargin
+        rightMargin         = flooredMargin + 1
+    }
+
+    return ' '.repeat( leftMargin ) + text + ' '.repeat( rightMargin )
+
+}
+
+/**
+ *
+ * @param {string} text
+ * @param {number} width
+ * @returns {string}
+ */
+function alignTextLeft( text, width ) {
+
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    let repeatTime     = width - unstyledText.length
+    repeatTime         = ( repeatTime > 0 ) ? repeatTime : 0
+
+    return text + ' '.repeat( repeatTime )
+
+}
+
+/**
+ *
+ * @param {string} text
+ * @param {number} width
+ * @returns {string}
+ */
+function alignTextRight( text, width ) {
+
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    let repeatTime     = width - unstyledText.length
+    repeatTime         = ( repeatTime > 0 ) ? repeatTime : 0
+
+    return ' '.repeat( repeatTime ) + text
+
+}
+
+function IndenterFactory( indentationChar = '\t', indentationLevel = 5 ) {
+
+    const indentationLevels = {}
+    let currentProperty     = 'I_'
+    for ( let currentIndentationLevel = 1 ; currentIndentationLevel &lt;= indentationLevel ; currentIndentationLevel++ ) {
+        indentationLevels[ currentProperty ] = indentationChar.repeat( currentIndentationLevel )
+        currentProperty += '_'
+    }
+
+    return {
+        I: new Indenter( indentationChar ),
+        ...indentationLevels
+    }
+
+}
+
+/**
+ * @param {string} string
+ * @returns {string}
+ */
+function toCamelCase( string ) {
+
+    if(typeof string !== 'string') throw new TypeError(`Invalid type '${typeof string}' expect string.`)
+
+    return string
+        .trim()
+        .toLowerCase()
+        .replace( /[^a-zA-Z0-9]+(.)/g, ( _, char ) => char.toUpperCase() )
+        .replace( /^[A-Z]/, ( char ) => char.toLowerCase() )
+
+}
+
+class Indenter {
+
+    constructor( indentationChar = '\t' ) {
+
+        this.indentationChar         = indentationChar
+        this.currentIndentationLevel = 0
+
+    }
+
+    _( indentationLevel = null ) {
+        return this.indentationChar.repeat( indentationLevel ?? this.currentIndentationLevel )
+    }
+
+    deeper( level = 1 ) {
+        this.currentIndentationLevel += level
+    }
+
+    shallower( level = 1 ) {
+        this.currentIndentationLevel -= level
+    }
+
+}
+
+
+export {
+    alignTextCenter,
+    alignTextLeft,
+    alignTextRight,
+    toCamelCase,
+    IndenterFactory as Indenter
+}</pre>
     </article>
 </section>
 
