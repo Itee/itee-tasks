@@ -62,10 +62,10 @@ function _getPackageRootDirectory() {
 
 }
 
-const iteePackageRootDirectory           = _getPackageRootDirectory()
-const iteePackageJsonPath                = join( iteePackageRootDirectory, 'package.json' )
-const iteePackageNodeModulesDirectory    = join( iteePackageRootDirectory, 'node_modules' )
-const iteePackageSourcesDirectory        = join( iteePackageRootDirectory, 'sources' )
+const iteePackageRootDirectory        = _getPackageRootDirectory()
+const iteePackageJsonPath             = join( iteePackageRootDirectory, 'package.json' )
+const iteePackageNodeModulesDirectory = join( iteePackageRootDirectory, 'node_modules' )
+const iteePackageSourcesDirectory     = join( iteePackageRootDirectory, 'sources' )
 
 const packageRootDirectory                = iteePackageRootDirectory.includes( 'node_modules' ) ? join( iteePackageRootDirectory, '../../../' ) : iteePackageRootDirectory
 const packageTasksDirectory               = join( packageRootDirectory, '.tasks' )
@@ -470,7 +470,9 @@ function createRollupConfigs( options = undefined ) {
             const isProd     = ( env.includes( 'prod' ) )
             const format     = formats[ formatIndex ]
             const extension  = getOutputFileExtensionBasedOnFileFormat( format )
-            const outputPath = ( isProd ) ? join( output, `${ fileName }.min.${ extension }` ) : join( output, `${ fileName }.${ extension }` )
+            const outputPath = ( isProd )
+                               ? join( output, `${ fileName }.min.${ extension }` )
+                               : join( output, `${ fileName }.${ extension }` )
 
             configs.push( {
                 input:    input,
