@@ -2,7 +2,7 @@ import {
     getPrettyPackageName,
     getPrettyPackageVersion,
     packageAuthor
-} from '../_utils.mjs'
+} from '../utils/packages.mjs'
 
 export default {
     tags: {

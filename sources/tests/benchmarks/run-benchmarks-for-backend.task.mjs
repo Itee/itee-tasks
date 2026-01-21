@@ -1,20 +1,18 @@
-import colors         from 'ansi-colors'
-import log            from 'fancy-log'
-import { existsSync } from 'fs'
-import { basename }   from 'node:path'
-import { join }       from 'path'
+import { existsSync }     from 'fs'
+import { basename }       from 'node:path'
+import { join }           from 'path'
 import {
-    logLoadingTask,
-    packageName,
+    log,
+    red,
+    yellow
+}                         from '../../utils/colors.mjs'
+import { logLoadingTask } from '../../utils/loggings.mjs'
+import {
+    getUnscopedPackageName,
     packageTestsBenchmarksDirectory
-}                     from '../../_utils.mjs'
+}                         from '../../utils/packages.mjs'
 
 logLoadingTask( import.meta.filename )
-
-const {
-          red,
-          yellow
-      } = colors
 
 /**
  * @description Will run benchmarks with node

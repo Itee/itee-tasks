@@ -1,32 +1,28 @@
-import colors     from 'ansi-colors'
-import log        from 'fancy-log'
 import {
     existsSync,
     rmSync
-}                 from 'fs'
-import { glob }   from 'glob'
+}                                  from 'fs'
 import {
     basename,
     dirname,
     extname,
-    join,
-    normalize
-}                 from 'path'
-import { rollup } from 'rollup'
+    join
+}                                  from 'path'
+import { rollup }                  from 'rollup'
 import {
-    getTaskConfigurationFor,
-    logLoadingTask,
+    green,
+    log,
+    magenta,
+    red,
+}                                  from '../../utils/colors.mjs'
+import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
     packageSourcesDirectory,
     packageTestsBundlesDirectory
-}                 from '../../_utils.mjs'
+}                                  from '../../utils/packages.mjs'
+import { getTaskConfigurationFor } from '../../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )
-
-const {
-          red,
-          green,
-          magenta,
-      } = colors
 
 /**
  * @description In view to detect bundling side effects this task will

@@ -1,15 +1,14 @@
-import colors          from 'ansi-colors'
-import { deleteAsync } from 'del'
-import log             from 'fancy-log'
-import { basename }    from 'node:path'
+import { deleteAsync }             from 'del'
+import { basename }                from 'node:path'
 import {
-    getTaskConfigurationFor,
-    logLoadingTask
-}                      from '../_utils.mjs'
+    log,
+    red
+}                                  from '../utils/colors.mjs'
+import { logLoadingTask }          from '../utils/loggings.mjs'
+import { getTaskConfigurationFor } from '../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )
 
-const { red }       = colors
 const configuration = await getTaskConfigurationFor( import.meta.filename )
 
 /**

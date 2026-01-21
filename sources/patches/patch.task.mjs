@@ -3,7 +3,7 @@ import {
     writeFileSync
 }                         from 'node:fs'
 import { basename }       from 'node:path'
-import { logLoadingTask } from '../_utils.mjs'
+import { logLoadingTask } from '../utils/loggings.mjs'
 
 logLoadingTask( import.meta.filename )
 

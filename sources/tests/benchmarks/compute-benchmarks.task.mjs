@@ -1,7 +1,5 @@
-import colors       from 'ansi-colors'
-import childProcess from 'child_process'
-import log          from 'fancy-log'
-import { glob }     from 'glob'
+import childProcess                from 'child_process'
+import { glob }                    from 'glob'
 import {
     basename,
     dirname,
@@ -9,25 +7,27 @@ import {
     join,
     normalize,
     relative
-}                   from 'path'
+}                                  from 'path'
+import {
+    log,
+    red,
+    yellow
+}                                  from '../../utils/colors.mjs'
 import {
     createDirectoryIfNotExist,
     createFile,
-    getTaskConfigurationFor,
-    logLoadingTask,
-    packageName,
+}                                  from '../../utils/files.mjs'
+import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
+    getUnscopedPackageName,
     packageNodeModulesDirectory,
     packageSourcesDirectory,
     packageTestsBenchmarksDirectory,
     packageTestsDirectory
-}                   from '../../_utils.mjs'
+}                                  from '../../utils/packages.mjs'
+import { getTaskConfigurationFor } from '../../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )
-
-const {
-          red,
-          yellow,
-      } = colors
 
 /**
  * @description Will generate benchmarks files from source code against provided alternatives

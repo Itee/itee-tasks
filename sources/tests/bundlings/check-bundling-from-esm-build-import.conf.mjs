@@ -1,9 +1,9 @@
 import nodeResolve from '@rollup/plugin-node-resolve'
-import colors      from 'ansi-colors'
-import log         from 'fancy-log'
-import cleanup     from 'rollup-plugin-cleanup'
-
-const { red } = colors
+import cleanup from 'rollup-plugin-cleanup'
+import {
+    log,
+    red
+}              from '../../utils/colors.mjs'
 
 export default {
     input:    null,

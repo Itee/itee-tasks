@@ -1,11 +1,9 @@
-import colors       from 'ansi-colors'
-import log          from 'fancy-log'
-import { basename } from 'node:path'
-import { rollup }   from 'rollup'
-import {
-    getTaskConfigurationFor,
-    logLoadingTask,
-}                   from '../_utils.mjs'
+import colors                      from 'ansi-colors'
+import log                         from 'fancy-log'
+import { basename }                from 'node:path'
+import { rollup }                  from 'rollup'
+import { logLoadingTask }          from '../utils/loggings.mjs'
+import { getTaskConfigurationFor } from '../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )
 

@@ -1,33 +1,31 @@
-import colors     from 'ansi-colors'
-import log        from 'fancy-log'
 import {
     existsSync,
     mkdirSync,
     readFileSync,
     rmSync,
     writeFileSync
-}                 from 'fs'
+}                                  from 'fs'
 import {
     basename,
     join,
     relative
-}                 from 'path'
-import { rollup } from 'rollup'
+}                                  from 'path'
+import { rollup }                  from 'rollup'
 import {
-    getTaskConfigurationFor,
-    logLoadingTask,
+    green,
+    log,
+    magenta,
+    red
+}                                  from '../../utils/colors.mjs'
+import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
+    getUnscopedPackageName,
     packageBuildsDirectory,
-    packageName,
     packageTestsBundlesDirectory
-}                 from '../../_utils.mjs'
+}                                  from '../../utils/packages.mjs'
+import { getTaskConfigurationFor } from '../../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )
-
-const {
-          red,
-          green,
-          magenta,
-      } = colors
 
 const checkBundlingFromEsmBuildImportTask       = async ( done ) => {
 

@@ -1,8 +1,6 @@
-import colors              from 'ansi-colors'
-import childProcess        from 'child_process'
-import log                 from 'fancy-log'
-import { glob }            from 'glob'
-import { isNotEmptyArray } from 'itee-validators'
+import childProcess                from 'child_process'
+import { glob }                    from 'glob'
+import { isNotEmptyArray }         from 'itee-validators'
 import {
     basename,
     dirname,
@@ -10,26 +8,28 @@ import {
     join,
     normalize,
     relative
-}                          from 'path'
+}                                  from 'path'
 import {
-    Indenter,
+    log,
+    red,
+    yellow
+}                                  from '../../utils/colors.mjs'
+import {
     createDirectoryIfNotExist,
-    createFile,
+    createFile
+}                                  from '../../utils/files.mjs'
+import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
     getPrettyPackageName,
-    getTaskConfigurationFor,
-    logLoadingTask,
-    packageName,
+    getUnscopedPackageName,
     packageNodeModulesDirectory,
     packageSourcesDirectory,
     packageTestsUnitsDirectory
-}                          from '../../_utils.mjs'
+}                                  from '../../utils/packages.mjs'
+import { getTaskConfigurationFor } from '../../utils/tasks.mjs'
+import { Indenter }                from '../../utils/texts.mjs'
 
 logLoadingTask( import.meta.filename )
-
-const {
-          red,
-          yellow,
-      } = colors
 
 /**
  * @description Will generate unit test files from source code using type inference from comments

@@ -1,33 +1,34 @@
-import colors     from 'ansi-colors'
-import log        from 'fancy-log'
+import { glob }                    from 'glob'
 import {
     existsSync,
     mkdirSync,
     rmSync,
     writeFileSync
-}                 from 'fs'
-import { glob }   from 'glob'
+}                                  from 'node:fs'
 import {
     basename,
     dirname,
+    extname,
     join,
     normalize,
     parse,
     relative
-}                 from 'path'
-import { rollup } from 'rollup'
+}                                  from 'node:path'
+import { rollup }                  from 'rollup'
 import {
-    getTaskConfigurationFor,
-    logLoadingTask,
+    green,
+    log,
+    magenta,
+    red
+}                                  from '../../utils/colors.mjs'
+import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
     packageSourcesDirectory,
     packageTestsBundlesDirectory
-}                 from '../../_utils.mjs'
+}                                  from '../../utils/packages.mjs'
+import { getTaskConfigurationFor } from '../../utils/tasks.mjs'
 
-const {
-          red,
-          green,
-          magenta,
-      } = colors
+logLoadingTask( import.meta.filename )
 
 const checkBundlingFromEsmFilesImportTask       = async ( done ) => {
 
@@ -107,7 +108,5 @@ const checkBundlingFromEsmFilesImportTask       = async ( done ) => {
 checkBundlingFromEsmFilesImportTask.displayName = basename( import.meta.filename, '.task.mjs' )
 checkBundlingFromEsmFilesImportTask.description = 'In view to detect bundling side effects this task will create intermediary file for each individual export from this package and then create rollup config for each of them and bundle'
 checkBundlingFromEsmFilesImportTask.flags       = null
-
-logLoadingTask( import.meta.filename )
 
 export { checkBundlingFromEsmFilesImportTask }

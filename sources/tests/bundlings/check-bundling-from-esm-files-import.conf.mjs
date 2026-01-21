@@ -1,10 +1,10 @@
-import nodeResolve     from '@rollup/plugin-node-resolve'
-import colors          from 'ansi-colors'
-import log             from 'fancy-log'
-import cleanup         from 'rollup-plugin-cleanup'
-import { getUnscopedPackageName } from '../../_utils.mjs'
-
-const { red } = colors
+import nodeResolve                from '@rollup/plugin-node-resolve'
+import cleanup                    from 'rollup-plugin-cleanup'
+import {
+    log,
+    red
+}                                 from '../../utils/colors.mjs'
+import { getUnscopedPackageName } from '../../utils/packages.mjs'
 
 export default {
     ignoredFiles: [
