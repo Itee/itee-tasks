@@ -1,21 +1,23 @@
 import {
     existsSync,
     rmSync
-}                                  from 'fs'
+}                                  from 'node:fs'
 import {
     basename,
     dirname,
     extname,
     join
-}                                  from 'path'
+}                                  from 'node:path'
 import { rollup }                  from 'rollup'
 import {
     green,
-    log,
     magenta,
     red,
 }                                  from '../../utils/colors.mjs'
-import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
+    log,
+    logLoadingTask
+}                                  from '../../utils/loggings.mjs'
 import {
     packageSourcesDirectory,
     packageTestsBundlesDirectory

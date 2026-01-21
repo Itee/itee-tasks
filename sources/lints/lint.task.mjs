@@ -3,10 +3,12 @@ import { basename }                    from 'node:path'
 import { promisify }                   from 'node:util'
 import {
     cyan,
-    log,
     red
 }                                      from '../utils/colors.mjs'
-import { logLoadingTask }              from '../utils/loggings.mjs'
+import {
+    log,
+    logLoadingTask
+}                                      from '../utils/loggings.mjs'
 import { getTaskConfigurationPathFor } from '../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )

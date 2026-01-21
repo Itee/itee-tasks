@@ -1,16 +1,20 @@
-import { existsSync }     from 'fs'
-import { basename }       from 'node:path'
-import { join }           from 'path'
+import { existsSync } from 'node:fs'
 import {
-    log,
+    basename,
+    join
+}                     from 'node:path'
+import {
     red,
     yellow
-}                         from '../../utils/colors.mjs'
-import { logLoadingTask } from '../../utils/loggings.mjs'
+}                     from '../../utils/colors.mjs'
+import {
+    log,
+    logLoadingTask
+}                     from '../../utils/loggings.mjs'
 import {
     getUnscopedPackageName,
     packageTestsBenchmarksDirectory
-}                         from '../../utils/packages.mjs'
+}                     from '../../utils/packages.mjs'
 
 logLoadingTask( import.meta.filename )
 

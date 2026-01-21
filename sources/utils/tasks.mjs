@@ -11,11 +11,11 @@ import {
 import {
     blue,
     cyan,
-    log,
     magenta,
     red,
 }                      from './colors.mjs'
 import { getJsonFrom } from './files.mjs'
+import { log }         from './loggings.mjs'
 import {
     iteePackageSourcesDirectory,
     packageRootDirectory,

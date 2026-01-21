@@ -1,15 +1,15 @@
-import { writeFileSync }           from 'fs'
+import { writeFileSync }           from 'node:fs'
 import {
     basename,
     join,
     relative
-}                                  from 'path'
+}                                  from 'node:path'
 import {
     green,
-    log,
     yellow
 }                                  from '../sources/utils/colors.mjs'
 import { getFilesFrom }            from '../sources/utils/files.mjs'
+import { log }                     from '../sources/utils/loggings.mjs'
 import {
     iteePackageRootDirectory,
     iteePackageSourcesDirectory,

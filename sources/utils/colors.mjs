@@ -1,23 +1,19 @@
 import colors from 'ansi-colors'
-import log    from 'fancy-log'
 
-const {
-          red,
-          green,
-          blue,
-          cyan,
-          yellow,
-          magenta,
-          unstyle
-      } = colors
+const red     = ( value ) => colors.red( value )
+const green   = ( value ) => colors.green( value )
+const blue    = ( value ) => colors.blue( value )
+const cyan    = ( value ) => colors.cyan( value )
+const yellow  = ( value ) => colors.yellow( value )
+const magenta = ( value ) => colors.magenta( value )
+const unstyle = ( value ) => colors.unstyle( value )
 
 export {
-    log,
     red,
     green,
     blue,
     cyan,
     yellow,
     magenta,
-    unstyle,
+    unstyle
 }

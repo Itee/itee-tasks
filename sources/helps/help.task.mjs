@@ -1,25 +1,27 @@
-import { basename }       from 'node:path'
+import { basename } from 'node:path'
 import {
     blue,
     cyan,
     green,
-    log,
     magenta,
     red,
     yellow
-}                         from '../utils/colors.mjs'
-import { logLoadingTask } from '../utils/loggings.mjs'
+}                   from '../utils/colors.mjs'
+import {
+    log,
+    logLoadingTask
+}                   from '../utils/loggings.mjs'
 import {
     getPrettyNodeVersion,
     getPrettyNpmVersion,
     getPrettyPackageName,
     getPrettyPackageVersion
-}                         from '../utils/packages.mjs'
+}                   from '../utils/packages.mjs'
 import {
     alignTextCenter,
     alignTextLeft,
     Indenter,
-}                         from '../utils/texts.mjs'
+}                   from '../utils/texts.mjs'
 
 logLoadingTask( import.meta.filename )
 

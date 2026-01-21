@@ -1,6 +1,6 @@
-import childProcess                from 'child_process'
 import { glob }                    from 'glob'
 import { isNotEmptyArray }         from 'itee-validators'
+import childProcess                from 'node:child_process'
 import {
     basename,
     dirname,
@@ -8,9 +8,8 @@ import {
     join,
     normalize,
     relative
-}                                  from 'path'
+}                                  from 'node:path'
 import {
-    log,
     red,
     yellow
 }                                  from '../../utils/colors.mjs'
@@ -18,7 +17,10 @@ import {
     createDirectoryIfNotExist,
     createFile
 }                                  from '../../utils/files.mjs'
-import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
+    log,
+    logLoadingTask
+}                                  from '../../utils/loggings.mjs'
 import {
     getPrettyPackageName,
     getUnscopedPackageName,
@@ -74,7 +76,7 @@ const computeUnitTestsTask       = async ( done ) => {
             const jsdocPath   = join( packageNodeModulesDirectory, '/jsdoc/jsdoc.js' )
             const jsdocOutput = childProcess.execFileSync( 'node', [ jsdocPath, '--explain', sourceFile ] ).toString()
 
-            if ( jsdocOutput.includes('There are no input files to process') ) {
+            if ( jsdocOutput.includes( 'There are no input files to process' ) ) {
                 log( 'Error   ', red( `${ sourceFile }, no input files to process` ) )
                 continue
             }

@@ -1,9 +1,8 @@
+import commonjs                   from '@rollup/plugin-commonjs'
 import nodeResolve                from '@rollup/plugin-node-resolve'
 import cleanup                    from 'rollup-plugin-cleanup'
-import {
-    log,
-    red
-}                                 from '../../utils/colors.mjs'
+import { red }                    from '../../utils/colors.mjs'
+import { log }                    from '../../utils/loggings.mjs'
 import { getUnscopedPackageName } from '../../utils/packages.mjs'
 
 export default {

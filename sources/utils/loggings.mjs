@@ -1,14 +1,13 @@
+import log                      from 'fancy-log'
 import {
     basename,
     relative
 }                               from 'node:path'
 import {
     blue,
-    green,
-    log
+    green
 }                               from './colors.mjs'
 import { packageRootDirectory } from './packages.mjs'
-
 
 /* global process */
 const isDebugging = ( process && process.env && process.env.RUNNER_DEBUG && process.env.RUNNER_DEBUG === '1' )
@@ -28,4 +27,7 @@ function logLoadingTask( filename ) {
 }
 
 
-export { logLoadingTask }
+export {
+    log,
+    logLoadingTask
+}

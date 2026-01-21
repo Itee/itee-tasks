@@ -1,20 +1,22 @@
-import { spawn }          from 'child_process'
-import { existsSync }     from 'node:fs'
+import { spawn }      from 'node:child_process'
+import { existsSync } from 'node:fs'
 import {
     basename,
     join
-}                         from 'node:path'
+}                     from 'node:path'
 import {
-    log,
     red,
     yellow
-}                         from '../../utils/colors.mjs'
-import { logLoadingTask } from '../../utils/loggings.mjs'
+}                     from '../../utils/colors.mjs'
+import {
+    log,
+    logLoadingTask
+}                     from '../../utils/loggings.mjs'
 import {
     getUnscopedPackageName,
     packageNodeModulesDirectory,
     packageTestsUnitsDirectory
-}                         from '../../utils/packages.mjs'
+}                     from '../../utils/packages.mjs'
 
 logLoadingTask( import.meta.filename )
 

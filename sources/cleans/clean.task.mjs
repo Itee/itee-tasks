@@ -1,10 +1,10 @@
 import { deleteAsync }             from 'del'
 import { basename }                from 'node:path'
+import { red }                     from '../utils/colors.mjs'
 import {
     log,
-    red
-}                                  from '../utils/colors.mjs'
-import { logLoadingTask }          from '../utils/loggings.mjs'
+    logLoadingTask
+}                                  from '../utils/loggings.mjs'
 import { getTaskConfigurationFor } from '../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )

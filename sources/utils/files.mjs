@@ -6,10 +6,8 @@ import {
     writeFileSync
 }                    from 'node:fs'
 import { normalize } from 'node:path'
-import {
-    green,
-    log
-} from './colors.mjs'
+import { log }       from './loggings.mjs'
+import { green }     from './colors.mjs'
 
 function createDirectoryIfNotExist( directoryPath ) {
 

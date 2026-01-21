@@ -1,9 +1,7 @@
 import nodeResolve from '@rollup/plugin-node-resolve'
-import cleanup from 'rollup-plugin-cleanup'
-import {
-    log,
-    red
-}              from '../../utils/colors.mjs'
+import cleanup     from 'rollup-plugin-cleanup'
+import { red }     from '../../utils/colors.mjs'
+import { log }     from '../../utils/loggings.mjs'
 
 export default {
     input:    null,

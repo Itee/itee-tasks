@@ -1,14 +1,14 @@
-import commonjs     from '@rollup/plugin-commonjs'
-import nodeResolve  from '@rollup/plugin-node-resolve'
-import terser       from '@rollup/plugin-terser'
-import figlet       from 'figlet'
-import { basename } from 'node:path'
-import { join }     from 'path'
-import replace      from 'rollup-plugin-re'
+import commonjs    from '@rollup/plugin-commonjs'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import terser      from '@rollup/plugin-terser'
+import figlet      from 'figlet'
 import {
-    log,
-    red
-} from './colors.mjs'
+    basename,
+    join
+}                  from 'node:path'
+import replace     from 'rollup-plugin-re'
+import { red }     from './colors.mjs'
+import { log }     from './loggings.mjs'
 import {
     getPrettyPackageName,
     getPrettyPackageVersion,
@@ -18,7 +18,7 @@ import {
     packageDescription,
     packageLicense,
     packageSourcesDirectory
-} from './packages.mjs'
+}                  from './packages.mjs'
 
 
 function getPrettyFormatForBanner( format ) {

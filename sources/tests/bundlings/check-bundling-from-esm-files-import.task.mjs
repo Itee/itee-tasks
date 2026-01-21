@@ -1,4 +1,3 @@
-import { glob }                    from 'glob'
 import {
     existsSync,
     mkdirSync,
@@ -8,20 +7,20 @@ import {
 import {
     basename,
     dirname,
-    extname,
     join,
-    normalize,
     parse,
     relative
 }                                  from 'node:path'
 import { rollup }                  from 'rollup'
 import {
     green,
-    log,
     magenta,
     red
 }                                  from '../../utils/colors.mjs'
-import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
+    log,
+    logLoadingTask
+}                                  from '../../utils/loggings.mjs'
 import {
     packageSourcesDirectory,
     packageTestsBundlesDirectory

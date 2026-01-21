@@ -1,11 +1,11 @@
 import child_process                   from 'node:child_process'
 import { basename }                    from 'node:path'
 import { promisify }                   from 'node:util'
+import { red }                         from '../utils/colors.mjs'
 import {
     log,
-    red
-}                                      from '../utils/colors.mjs'
-import { logLoadingTask }              from '../utils/loggings.mjs'
+    logLoadingTask
+}                                      from '../utils/loggings.mjs'
 import { getTaskConfigurationPathFor } from '../utils/tasks.mjs'
 
 logLoadingTask( import.meta.filename )

@@ -4,20 +4,22 @@ import {
     readFileSync,
     rmSync,
     writeFileSync
-}                                  from 'fs'
+}                                  from 'node:fs'
 import {
     basename,
     join,
     relative
-}                                  from 'path'
+}                                  from 'node:path'
 import { rollup }                  from 'rollup'
 import {
     green,
-    log,
     magenta,
     red
 }                                  from '../../utils/colors.mjs'
-import { logLoadingTask }          from '../../utils/loggings.mjs'
+import {
+    log,
+    logLoadingTask
+}                                  from '../../utils/loggings.mjs'
 import {
     getUnscopedPackageName,
     packageBuildsDirectory,

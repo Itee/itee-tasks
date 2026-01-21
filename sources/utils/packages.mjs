@@ -5,11 +5,11 @@ import {
 }                        from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-    log,
     red,
     yellow
-}                      from './colors.mjs'
-import { getJsonFrom } from './files.mjs'
+}                        from './colors.mjs'
+import { getJsonFrom }   from './files.mjs'
+import { log }           from './loggings.mjs'
 
 function _getPackageRootDirectory() {
 
