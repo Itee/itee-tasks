@@ -114,6 +114,63 @@ function getOutputFileExtensionBasedOnFileFormat( format ) {
 
 }
 
+function assignExternalPackages( format, externalMap = {} ) {
+
+    return ( format in externalMap )
+           ? externalMap[ format ]
+           : []
+
+}
+
+function assignPlugins( format, env, pluginMap ) {
+
+    let plugins = []
+
+    if ( 'replace' in pluginMap ) {
+        let pluginConfig = pluginMap[ 'replace' ]
+        if ( !pluginConfig ) {
+            pluginConfig = {
+                defines: {
+                    IS_KEEP_ON_BUILD:     false,
+                    IS_BACKEND_SPECIFIC:  ( [ 'esm', 'cjs' ].includes( format ) ),
+                    IS_FRONTEND_SPECIFIC: ( [ 'esm', 'iife' ].includes( format ) ),
+                }
+            }
+        }
+
+        plugins.push( replace( pluginConfig ) )
+    }
+
+    if ( 'commonjs' in pluginMap ) {
+        let pluginConfig = pluginMap[ 'commonjs' ]
+        if ( !pluginConfig ) {
+            pluginConfig = {
+                include: 'node_modules/**'
+            }
+        }
+
+        plugins.push( commonjs( pluginConfig ) )
+    }
+
+    if ( 'nodeResolve' in pluginMap ) {
+        let pluginConfig = pluginMap[ 'nodeResolve' ]
+        if ( !pluginConfig ) {
+            pluginConfig = {
+                preferBuiltins: true
+            }
+        }
+
+        plugins.push( nodeResolve( pluginConfig ) )
+    }
+
+    if ( env === 'prod' ) {
+        plugins.push( terser() )
+    }
+
+    return plugins
+
+}
+
 /**
  * Will create an appropriate configuration object for rollup, related to the given arguments.
  *
@@ -123,24 +180,19 @@ function getOutputFileExtensionBasedOnFileFormat( format ) {
  */
 function createRollupConfigs( options = {} ) {
 
-    const _options = {
-        input:     join( packageSourcesDirectory, `${ getUnscopedPackageName() }.js` ),
-        output:    packageBuildsDirectory,
-        formats:   [ 'esm', 'cjs', 'iife' ],
-        envs:      [ 'dev', 'prod' ],
-        treeshake: true,
-        ...options
+    const input       = options.input || join( packageSourcesDirectory, `${ getUnscopedPackageName() }.js` )
+    const output      = options.output || packageBuildsDirectory
+    const formats     = options.formats || [ 'esm', 'cjs', 'iife' ]
+    const envs        = options.envs || [ 'dev', 'prod' ]
+    const treeshake   = options.treeshake || true
+    const externalMap = options.externalMap || {}
+    const pluginMap   = options.pluginMap || {
+        replace:     null,
+        commonjs:    null,
+        nodeResolve: null,
     }
-
-    const {
-              input,
-              output,
-              formats,
-              envs,
-              treeshake
-          }        = _options
-    const name     = getPrettyPackageName( '.' )
-    const fileName = basename( input, '.js' )
+    const name        = getPrettyPackageName( '.' )
+    const fileName    = basename( input, '.js' )
 
     const configs = []
 
@@ -152,27 +204,12 @@ function createRollupConfigs( options = {} ) {
             const outputPath = ( isProd )
                                ? join( output, `${ fileName }.min.${ extension }` )
                                : join( output, `${ fileName }.${ extension }` )
+
             const config = {
-                input:    input,
-                external: ( format === 'cjs' ) ? [
-                    'fs'
-                ] : [],
-                plugins: [
-                    replace( {
-                        defines: {
-                            IS_REMOVE_ON_BUILD:  false,
-                            IS_BACKEND_SPECIFIC: ( format === 'cjs' )
-                        }
-                    } ),
-                    commonjs( {
-                        include: 'node_modules/**'
-                    } ),
-                    nodeResolve( {
-                        preferBuiltins: true
-                    } ),
-                    isProd && terser()
-                ],
-                onwarn: ( {
+                input:     input,
+                external:  assignExternalPackages( format, externalMap ),
+                plugins:   assignPlugins( format, env, pluginMap ),
+                onwarn:    ( {
                     loc,
                     frame,
                     message
@@ -214,7 +251,7 @@ function createRollupConfigs( options = {} ) {
                 }
             }
 
-            configs.push(config)
+            configs.push( config )
         }
     }
 
