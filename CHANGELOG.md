@@ -1,3 +1,10 @@
+# [v1.4.1](https://github.com/Itee/tasks/compare/v1.4.0...v1.4.1) (2026-01-22)
+
+# [v1.4.0](https://github.com/Itee/tasks/compare/v1.3.3...v1.4.0) (2026-01-21)
+
+## ✨ New Features
+- [`d5043c2`](https://github.com/Itee/tasks/commit/d5043c2)  (utils) add new benchmarks and testing package wrapper
+
 # [v1.3.3](https://github.com/Itee/tasks/compare/v1.3.2...v1.3.3) (2026-01-21)
 
 # [v1.3.2](https://github.com/Itee/tasks/compare/v1.3.1...v1.3.2) (2026-01-21)

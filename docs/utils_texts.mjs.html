@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Itee Tasks v1.4.0 Source: tests/benchmarks/run-benchmarks-for-frontend.task.mjs</title>
+	<title>Itee Tasks v1.4.0 Source: utils/texts.mjs</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -65,57 +65,133 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: tests/benchmarks/run-benchmarks-for-frontend.task.mjs</h1>
+		<h1 class="page-title">Source: utils/texts.mjs</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import { startTestRunner }         from '@web/test-runner'
-import { basename }                from 'node:path'
-import { red }                     from '../../utils/colors.mjs'
-import { logLoadingTask }          from '../../utils/loggings.mjs'
-import { getTaskConfigurationFor } from '../../utils/tasks.mjs'
-
-logLoadingTask( import.meta.filename )
+            class="sunlight-highlight-javascript linenums">import { unstyle } from './colors.mjs'
 
 /**
- * @description Will run benchmarks with web-test-runner
+ *
+ * @param {string} text
+ * @param {number} width
+ * @returns {string}
  */
-const runBenchmarksForFrontendTask       = async () => {
+function alignTextCenter( text, width ) {
 
-    const configuration = await getTaskConfigurationFor( import.meta.filename )
-    const testRunner    = await startTestRunner( {
-        config:          configuration,
-        readCliArgs:     false,
-        readFileConfig:  false,
-        autoExitProcess: false,
-    } )
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    const marginLength = ( width - unstyledText.length ) / 2
 
-    return new Promise( ( resolve, reject ) => {
+    let leftMargin, rightMargin
+    if ( Number.isInteger( marginLength ) ) {
+        leftMargin  = marginLength
+        rightMargin = marginLength
+    } else {
+        const flooredMargin = Math.floor( marginLength )
+        leftMargin          = flooredMargin
+        rightMargin         = flooredMargin + 1
+    }
 
-        if ( !testRunner ) {
-            reject( red( 'Internal test runner error.' ) )
-            return
-        }
-
-        // To ensure that testRunner exit event won't be used by other instance of test runner,
-        // we need to be sure that current test runner is ended
-        testRunner.on( 'finished', () => {
-            testRunner.stop()
-        } )
-
-        testRunner.on( 'stopped', () => {
-            resolve()
-        } )
-
-    } )
+    return ' '.repeat( leftMargin ) + text + ' '.repeat( rightMargin )
 
 }
-runBenchmarksForFrontendTask.displayName = basename( import.meta.filename, '.task.mjs' )
-runBenchmarksForFrontendTask.description = 'Will run benchmarks with web-test-runner.'
-runBenchmarksForFrontendTask.flags       = null
 
-export { runBenchmarksForFrontendTask }</pre>
+/**
+ *
+ * @param {string} text
+ * @param {number} width
+ * @returns {string}
+ */
+function alignTextLeft( text, width ) {
+
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    let repeatTime     = width - unstyledText.length
+    repeatTime         = ( repeatTime > 0 ) ? repeatTime : 0
+
+    return text + ' '.repeat( repeatTime )
+
+}
+
+/**
+ *
+ * @param {string} text
+ * @param {number} width
+ * @returns {string}
+ */
+function alignTextRight( text, width ) {
+
+    const unstyledText = unstyle( text.repeat( 1 ) )
+    let repeatTime     = width - unstyledText.length
+    repeatTime         = ( repeatTime > 0 ) ? repeatTime : 0
+
+    return ' '.repeat( repeatTime ) + text
+
+}
+
+function IndenterFactory( indentationChar = '\t', indentationLevel = 5 ) {
+
+    const indentationLevels = {}
+    let currentProperty     = 'I_'
+    for ( let currentIndentationLevel = 1 ; currentIndentationLevel &lt;= indentationLevel ; currentIndentationLevel++ ) {
+        indentationLevels[ currentProperty ] = indentationChar.repeat( currentIndentationLevel )
+        currentProperty += '_'
+    }
+
+    return {
+        I: new Indenter( indentationChar ),
+        ...indentationLevels
+    }
+
+}
+
+/**
+ * @param {string} string
+ * @returns {string}
+ */
+function toCamelCase( string ) {
+
+    if(typeof string !== 'string') throw new TypeError(`Invalid type '${typeof string}' expect string.`)
+
+    return string
+        .trim()
+        .toLowerCase()
+        .replace( /[^a-zA-Z0-9]+(.)/g, ( _, char ) => char.toUpperCase() )
+        .replace( /^[A-Z]/, ( char ) => char.toLowerCase() )
+
+}
+
+class Indenter {
+
+    constructor( indentationChar = '\t' ) {
+
+        this.indentationChar         = indentationChar
+        this.currentIndentationLevel = 0
+
+    }
+
+    _( indentationLevel = null ) {
+        return this.indentationChar.repeat( indentationLevel ?? this.currentIndentationLevel )
+    }
+
+    deeper( level = 1 ) {
+        this.currentIndentationLevel += level
+    }
+
+    shallower( level = 1 ) {
+        this.currentIndentationLevel -= level
+    }
+
+}
+
+
+export {
+    alignTextCenter,
+    alignTextLeft,
+    alignTextRight,
+    toCamelCase,
+    IndenterFactory as Indenter
+}</pre>
     </article>
 </section>
 
