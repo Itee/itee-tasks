@@ -1,3 +1,8 @@
+# [v1.4.3](https://github.com/Itee/tasks/compare/v1.4.2...v1.4.3) (2026-01-22)
+
+## 🐛 Bug Fixes
+- [`df563fc`](https://github.com/Itee/tasks/commit/df563fc)  (bundling) fix wrong config usage for check-bundling-from-esm-files-import.task
+
 # [v1.4.2](https://github.com/Itee/tasks/compare/v1.4.1...v1.4.2) (2026-01-22)
 
 ## 🐛 Bug Fixes
