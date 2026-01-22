@@ -1,3 +1,5 @@
+# [v1.4.1](https://github.com/Itee/tasks/compare/v1.4.0...v1.4.1) (2026-01-22)
+
 # [v1.4.0](https://github.com/Itee/tasks/compare/v1.3.3...v1.4.0) (2026-01-21)
 
 ## ✨ New Features
