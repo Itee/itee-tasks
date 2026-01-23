@@ -206,10 +206,10 @@ function createRollupConfigs( options = {} ) {
                                : join( output, `${ fileName }.${ extension }` )
 
             const config = {
-                input:     input,
-                external:  assignExternalPackages( format, externalMap ),
-                plugins:   assignPlugins( format, env, pluginMap ),
-                onwarn:    ( {
+                input:    input,
+                external: assignExternalPackages( format, externalMap ),
+                plugins:  assignPlugins( format, env, pluginMap ),
+                onwarn:   ( {
                     loc,
                     frame,
                     message
