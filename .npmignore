@@ -1,5 +1,7 @@
 /.github/
+/docs/
 /tests/
+/tutorials/
 .czrc
 .releaserc.mjs
 gulpfile.mjs
