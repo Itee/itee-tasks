@@ -57,7 +57,7 @@ function getGitPlugin() {
     return [
         '@semantic-release/git', {
             'assets':  [
-                'builds/**', 'docs/**', 'package.json', 'CHANGELOG.md'
+                'builds/**', 'docs/**', 'package.json', 'package-lock.json', 'CHANGELOG.md'
             ],
             'message': ':bookmark: (release) v${nextRelease.version}'
         }
